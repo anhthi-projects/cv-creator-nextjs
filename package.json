@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node server.js",
+    "dev": "node src/server.js",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js",
+    "start": "cross-env NODE_ENV=production node src/server.js",
     "lint": "next lint"
   },
   "repository": {
@@ -21,13 +21,16 @@
   },
   "homepage": "https://github.com/portfo-projects/cv-creator-ssr#readme",
   "dependencies": {
+    "@babel/runtime": "^7.21.0",
     "next": "^13.2.4",
+    "next-routes-extended": "^1.7.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/node": "^18.15.3",
     "@types/react": "^18.0.28",
+    "cross-env": "^7.0.3",
     "typescript": "^5.0.2"
   }
 }

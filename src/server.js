@@ -1,25 +1,19 @@
 const { createServer } = require("http");
 const { parse } = require("url");
 const next = require("next");
+const routes = require("./routes");
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";
 const port = 3000;
 
 const app = next({ dev, hostname, port });
-const handle = app.getRequestHandler();
+const handler = routes.getRequestHandler(app);
 
 app.prepare().then(() => {
   createServer(async (req, res) => {
     try {
-      const parsedUrl = parse(req.url, true);
-      const { pathname, query } = parsedUrl;
-
-      if (pathname === "/") {
-        await app.render(req, res, "/home", query);
-      } else {
-        await handle(req, res, parsedUrl);
-      }
+      handler(req, res);
     } catch (error) {
       console.error("Error occurred handling", req.url, error);
       res.statusCode = 500;

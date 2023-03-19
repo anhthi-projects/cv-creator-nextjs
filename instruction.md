@@ -10,7 +10,7 @@ Update script in package.json
   "scripts": {
     "dev": "node server.ts",
     "build": "next build",
-    "start": "NODE_ENV=production node server.ts",
+    "start": "cross-env NODE_ENV=production node server.ts",
     "lint": "next lint"
   },
 ```
@@ -25,6 +25,11 @@ Create `tsconfig.json` file at root and install typescript and dependencies
   npm i typescript @types/react @types/node -D
 ```
 
-# 3. Setup server manually
+# 3. Setup server and routing manually
 
-Create the `server.js` and `pages directory` at root
+Create the `server.js`, `routes.js` and `pages` at src directory
+
+```
+  npm i next-routes-extended -D
+  npm i @babel/runtime
+```

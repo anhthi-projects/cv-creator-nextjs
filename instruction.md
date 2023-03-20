@@ -52,3 +52,17 @@ Create `.prettierrc.json` at root and install dependencies
 ```
   npm install prettier eslint-config-prettier -D
 ```
+
+# 6. Setup Sass
+
+Install sass and update sassOptions in next.config.js
+
+```
+  npm i sass -D
+```
+
+```
+  sassOptions: {
+    includePaths: [path.join(__dirname, "src/styles")],
+  },
+```

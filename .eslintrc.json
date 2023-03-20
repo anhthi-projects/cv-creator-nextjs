@@ -1,8 +1,6 @@
 {
   "extends": ["next/core-web-vitals", "prettier"],
   "rules": {
-    "@typescript-eslint/no-unused-vars": "error",
-    "@typescript-eslint/no-var-requires": "off",
     "arrow-body-style": "off",
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
@@ -34,3 +32,4 @@
     ]
   }
 }
+

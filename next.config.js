@@ -1,5 +1,7 @@
 const path = require("path");
 
+const withBundleStats = require("next-plugin-bundle-stats");
+
 const nextConfig = {
   reactStrictMode: true,
   useFileSystemPublicRoutes: false,
@@ -12,4 +14,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withBundleStats()(nextConfig);

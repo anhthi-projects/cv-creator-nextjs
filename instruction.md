@@ -66,3 +66,9 @@ Install sass and update sassOptions in next.config.js
     includePaths: [path.join(__dirname, "src/styles")],
   },
 ```
+
+# 7. Setup next-plugin-bundle-stats
+
+```
+  npm i next-plugin-bundle-stats -D
+```

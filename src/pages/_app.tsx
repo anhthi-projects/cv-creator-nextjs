@@ -1,4 +1,4 @@
-import "@src/styles/styles.scss";
+import "@src/styles/index.scss";
 import { AppProps } from "next/app";
 import Head from "next/head";
 

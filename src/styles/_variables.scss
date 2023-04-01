@@ -6,12 +6,25 @@ $page-width: 1190px;
 $page-ratio: 1.4145161;
 $page-padding: 80px;
 
+$left-column: 380px;
+
 /*
  * Colors
  */
 
 $color-primary: #0773e8;
 $color-white: #ffffff;
+
+/*
+ * Fonts
+ */
+
+$font-xxs: 0.74rem;
+$font-xs: 0.81rem;
+$font-sm: 0.88rem;
+$font-md: 0.95rem;
+$font-lg: 1.02rem;
+$font-xl: 1.09rem;
 
 /*
  * Breakpoints

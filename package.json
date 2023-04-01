@@ -23,6 +23,7 @@
   "homepage": "https://github.com/portfo-projects/cv-creator-ssr#readme",
   "dependencies": {
     "@babel/runtime": "^7.21.0",
+    "classnames": "^2.3.2",
     "next": "^13.2.4",
     "next-routes-extended": "^1.7.0",
     "react": "^18.2.0",

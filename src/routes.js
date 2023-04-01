@@ -2,12 +2,12 @@ const routes = require("next-routes-extended");
 
 module.exports = routes()
   .add({
-    pattern: "/",
+    pattern: "/home",
     name: "home",
     page: "home",
   })
   .add({
-    pattern: "/design",
+    pattern: "/",
     name: "design",
     page: "design",
   });

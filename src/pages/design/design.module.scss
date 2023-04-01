@@ -1,0 +1,8 @@
+.page-wrapper {
+  width: 100%;
+  max-width: $page-width;
+  min-height: calc($page-width * $page-ratio);
+  background-color: $color-white;
+  margin: 80px auto 50px;
+  padding: $page-padding;
+}

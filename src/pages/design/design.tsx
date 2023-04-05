@@ -1,5 +1,7 @@
 import Head from "next/head";
 
+import EditableText from "@src/components/editable-text";
+
 import Avatar from "./avatar";
 import styles from "./design.module.scss";
 import EditTools from "./edit-tools";
@@ -15,7 +17,9 @@ const Designing = () => {
         <div className={styles["left-column"]}>
           <Avatar />
         </div>
-        <div className={styles["right-column"]}>Right</div>
+        <div className={styles["right-column"]}>
+          <EditableText initText="hello" />
+        </div>
       </div>
     </>
   );

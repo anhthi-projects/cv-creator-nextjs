@@ -1,57 +1,34 @@
-import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FC, useState } from "react";
 
-import styles from "./editable-text.module.scss";
+import { useInOutsideClick } from "@src/hooks/useInOutsideClick";
+
 import { EditableTextProps, Mode } from "./editable-text.types";
+import { EditableWrapper } from "./editable.styled";
 
 const EditableText: FC<EditableTextProps> = ({ initText }) => {
   const [mode, setMode] = useState(Mode.TEXT);
   const [text, setText] = useState(initText);
-  const wrapperRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handleClick = (e: any) => {
-      if (wrapperRef.current && wrapperRef.current.contains(e.target)) {
-        setMode(Mode.INPUT);
-      } else {
-        setMode(Mode.TEXT);
-      }
-    };
+  const changeToText = () => setMode(Mode.TEXT);
+  const changeToInput = () => setMode(Mode.INPUT);
 
-    const handleKeyDown = (e: any) => {
-      if (e.keyCode === 13) {
-        setMode(Mode.TEXT);
-      }
-    };
-
-    window.addEventListener("click", handleClick);
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("click", handleClick);
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
+  const wrapperRef = useInOutsideClick<HTMLInputElement>({
+    insideCallback: changeToInput,
+    outsideCallback: changeToText,
+  });
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
   };
 
-  /**
-   * Render
-   */
-
-  const renderType = () => {
-    if (mode === Mode.TEXT) {
-      return text;
-    }
-
-    return <input value={text} onChange={handleInputChange} autoFocus />;
-  };
-
   return (
-    <div ref={wrapperRef} className={styles["editable-wrapper"]}>
-      {renderType()}
-    </div>
+    <EditableWrapper ref={wrapperRef}>
+      {mode === Mode.TEXT ? (
+        text
+      ) : (
+        <input value={text} onChange={handleInputChange} autoFocus />
+      )}
+    </EditableWrapper>
   );
 };
 

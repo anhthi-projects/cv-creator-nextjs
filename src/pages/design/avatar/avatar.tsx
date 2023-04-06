@@ -1,9 +1,14 @@
 import { ChangeEvent, useState } from "react";
 
-import cx from "classnames";
 import Image from "next/image";
 
-import styles from "./avatar.module.scss";
+import {
+  AvatarWrapper,
+  FileUploader,
+  InputFile,
+  PreviewPhoto,
+  SelectYourPhoto,
+} from "./avatar.styled";
 
 const Avatar = () => {
   const [base64Photo, setBase64Photo] = useState("");
@@ -34,45 +39,34 @@ const Avatar = () => {
       return null;
     }
 
-    return (
-      <div
-        className={styles["preview-photo"]}
-        style={{ backgroundImage: `url(${base64Photo})` }}
-      />
-    );
+    return <PreviewPhoto style={{ backgroundImage: `url(${base64Photo})` }} />;
   };
 
   const renderFileUploader = () => {
     return (
-      <label
-        htmlFor="file-uploader"
-        className={cx(styles["file-uploader"], {
-          [styles.hidden]: base64Photo,
-        })}
-      >
+      <FileUploader htmlFor="file-uploader" hidden={!!base64Photo}>
         <Image
           width={32}
           height={32}
           src="/static/icons/camera.svg"
           alt="Select your photo"
         />
-        <span className={styles["select-your-photo"]}>Select your photo</span>
-        <input
+        <SelectYourPhoto>Select your photo</SelectYourPhoto>
+        <InputFile
           id="file-uploader"
           type="file"
           accept="image/*"
           onChange={handlePhotoSelect}
-          className={styles["input-file"]}
         />
-      </label>
+      </FileUploader>
     );
   };
 
   return (
-    <div className={styles["avatar-wrapper"]}>
+    <AvatarWrapper>
       {renderPreviewPhoto()}
       {renderFileUploader()}
-    </div>
+    </AvatarWrapper>
   );
 };
 

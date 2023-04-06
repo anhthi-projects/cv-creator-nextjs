@@ -3,7 +3,7 @@ import Head from "next/head";
 import EditableText from "@src/components/editable-text";
 
 import Avatar from "./avatar";
-import styles from "./design.module.scss";
+import { LeftColumn, PageWrapper, RightColumn } from "./design.styled";
 import EditTools from "./edit-tools";
 
 const Designing = () => {
@@ -13,14 +13,14 @@ const Designing = () => {
         <title>Design your CV</title>
       </Head>
       <EditTools />
-      <div className={styles["page-wrapper"]}>
-        <div className={styles["left-column"]}>
+      <PageWrapper>
+        <LeftColumn>
           <Avatar />
-        </div>
-        <div className={styles["right-column"]}>
+        </LeftColumn>
+        <RightColumn>
           <EditableText initText="hello" />
-        </div>
-      </div>
+        </RightColumn>
+      </PageWrapper>
     </>
   );
 };

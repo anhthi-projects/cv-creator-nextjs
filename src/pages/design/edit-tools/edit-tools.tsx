@@ -1,7 +1,7 @@
-import styles from "./edit-tools.module.scss";
+import { Wrapper } from "./edit-tools.styled";
 
 const EditTools = () => {
-  return <div className={styles["edit-tools-wrapper"]}></div>;
+  return <Wrapper>a</Wrapper>;
 };
 
 export default EditTools;

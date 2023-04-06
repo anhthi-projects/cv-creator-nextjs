@@ -1,14 +1,22 @@
 import { useEffect, useRef } from "react";
 
-export const useOutsideClick = <ElementType extends HTMLElement>(
-  callback: () => void
-) => {
+interface UseInOutsideClick {
+  insideCallback: () => void;
+  outsideCallback: () => void;
+}
+
+export const useInOutsideClick = <ElementType extends HTMLElement>({
+  insideCallback,
+  outsideCallback,
+}: UseInOutsideClick) => {
   const elementRef = useRef<ElementType>(null);
 
   useEffect(() => {
     const handleClick = (event: any) => {
-      if (elementRef.current && !elementRef.current.contains(event.target)) {
-        callback();
+      if (elementRef.current && elementRef.current.contains(event.target)) {
+        insideCallback();
+      } else {
+        outsideCallback();
       }
     };
 

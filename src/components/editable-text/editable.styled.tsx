@@ -1,7 +1,9 @@
-.editable-wrapper {
+import styled from "styled-components";
+
+export const EditableWrapper = styled.div`
   width: 100%;
   height: 30px;
-  font-size: $font-sm;
+  font-size: $font-md;
   display: flex;
   align-items: center;
   padding: 0 6px;
@@ -11,10 +13,10 @@
     outline: none;
     margin: 0 -6px;
     padding: 0 6px;
-    background-color: $color-light-1;
+    background-color: #eff1f7;
     flex-grow: 1;
     align-self: stretch;
-    font-size: $font-sm;
-    border-radius: 4px;
+    font-size: $font-md;
+    border-radius: 3px;
   }
-}
+`;

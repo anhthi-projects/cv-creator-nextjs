@@ -1,17 +1,20 @@
 import { createGlobalStyle } from "styled-components";
 
+import { Color } from "./variables";
+
 const GlobalStyles = createGlobalStyle`
   html,
   body {
     margin: 0;
     padding: 0;
-    font-family: "Open Sans";
+    font-family: "Quicksand";
     box-sizing: border-box;
+    background-color: ${Color.Blue};
   }
 
   input,
   textarea {
-    font-family: "Open Sans";
+    font-family: "Quicksand";
   }
 
   a {

@@ -1,22 +1,32 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+import { Color } from "@src/styles/variables";
+
+import { EditableTextProps } from "./editable-text.types";
 
 export const EditableWrapper = styled.div`
-  width: 100%;
-  height: 30px;
-  font-size: $font-md;
-  display: flex;
-  align-items: center;
-  padding: 0 6px;
-
-  input {
-    border: none;
-    outline: none;
-    margin: 0 -6px;
+  ${(props: EditableTextProps) => css`
+    width: 100%;
+    min-height: 30px;
+    font-size: ${props.fontSize};
+    font-weight: ${props.fontWeight};
+    color: ${props.text ? Color.Blue : Color.Light6};
+    display: flex;
+    align-items: center;
     padding: 0 6px;
-    background-color: #eff1f7;
-    flex-grow: 1;
-    align-self: stretch;
-    font-size: $font-md;
-    border-radius: 3px;
-  }
+
+    input {
+      border: none;
+      outline: none;
+      margin: 0 -6px;
+      padding: 0 6px;
+      flex-grow: 1;
+      align-self: stretch;
+      font-size: ${props.fontSize};
+      font-weight: ${props.fontWeight};
+      color: ${props.text ? Color.Blue : Color.Light3};
+      background-color: ${Color.Light1};
+      border-radius: 3px;
+    }
+  `}
 `;

@@ -1,5 +1,7 @@
 import styled, { css } from "styled-components";
 
+import { FontSize } from "@src/styles/variables";
+
 export const PreviewPhoto = styled.div`
   position: absolute;
   top: 0;
@@ -48,7 +50,7 @@ export const AvatarWrapper = styled.div`
 `;
 
 export const SelectYourPhoto = styled.span`
-  font-size: $font-sm;
+  font-size: ${FontSize.Sm};
   margin-top: 6px;
 `;
 

@@ -18,7 +18,7 @@ const Designing = () => {
           <Avatar />
         </LeftColumn>
         <RightColumn>
-          <EditableText initText="hello" />
+          <EditableText placeholder="Your name" />
         </RightColumn>
       </PageWrapper>
     </>

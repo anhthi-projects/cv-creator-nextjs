@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import {
-  colorWhite,
+  Color,
   leftColumnWidth,
   pagePadding,
   pageRatio,
@@ -12,7 +12,7 @@ export const PageWrapper = styled.div`
   width: 100%;
   max-width: ${pageWidth};
   min-height: calc(${pageWidth} * ${pageRatio});
-  background-color: ${colorWhite};
+  background-color: ${Color.White};
   margin: 80px auto 50px;
   padding: ${pagePadding};
   display: flex;

@@ -1,11 +1,19 @@
 import { ChangeEvent, FC, useState } from "react";
 
 import { useInOutsideClick } from "@src/hooks/useInOutsideClick";
+import { Color, FontSize, FontWeight } from "@src/styles/variables";
 
 import { EditableTextProps, Mode } from "./editable-text.types";
 import { EditableWrapper } from "./editable.styled";
 
-const EditableText: FC<EditableTextProps> = ({ initText }) => {
+const EditableText: FC<EditableTextProps> = (props) => {
+  const {
+    text: initText,
+    placeholder,
+    fontSize = FontSize.Xxl,
+    fontWeight = FontWeight.Bold,
+    color = Color.Blue,
+  } = props;
   const [mode, setMode] = useState(Mode.TEXT);
   const [text, setText] = useState(initText);
 
@@ -21,13 +29,31 @@ const EditableText: FC<EditableTextProps> = ({ initText }) => {
     setText(e.target.value);
   };
 
+  const renderDisplayType = () => {
+    if (mode === Mode.TEXT) {
+      return text || placeholder;
+    }
+
+    return (
+      <input
+        value={text}
+        placeholder={placeholder}
+        onChange={handleInputChange}
+        autoFocus
+      />
+    );
+  };
+
   return (
-    <EditableWrapper ref={wrapperRef}>
-      {mode === Mode.TEXT ? (
-        text
-      ) : (
-        <input value={text} onChange={handleInputChange} autoFocus />
-      )}
+    <EditableWrapper
+      text={text}
+      placeholder={placeholder}
+      fontSize={fontSize}
+      fontWeight={fontWeight}
+      color={color}
+      ref={wrapperRef}
+    >
+      {renderDisplayType()}
     </EditableWrapper>
   );
 };

@@ -56,6 +56,22 @@ export enum FontWeight {
 }
 
 /*
+ * Font
+ */
+
+export enum Space {
+  px2 = "2px",
+  px4 = "4px",
+  px6 = "6px",
+  px8 = "8px",
+  px12 = "12px",
+  px16 = "14px",
+  px20 = "20px",
+  px28 = "28px",
+  px32 = "32px",
+}
+
+/*
  * Breakpoints
  */
 

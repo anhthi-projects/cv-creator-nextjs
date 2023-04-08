@@ -1,17 +1,11 @@
 import { Color, FontSize, FontWeight } from "@src/styles/variables";
 
-import { FlexLayout } from "../layout";
-
-export enum Mode {
-  TEXT = "text",
-  INPUT = "input",
-}
-
-export interface EditableTextProps {
+export interface ContentEditableProps {
   text?: string;
   placeholder?: string;
+  color?: Color;
   fontSize?: FontSize;
   fontWeight?: FontWeight;
-  color?: Color;
+  noMargin?: boolean;
   className?: string;
 }

@@ -2,11 +2,12 @@
  * App
  */
 
-export const pageWidth = "1190px";
-export const pageRatio = 1.4145161;
-export const pagePadding = "80px";
-
-export const leftColumnWidth = "320px";
+export enum Page {
+  Width = "1190px",
+  Ratio = 1.4145161,
+  Padding = "70px",
+  LeftColumnWidth = "320px",
+}
 
 /*
  * Colors
@@ -37,12 +38,13 @@ export enum Color {
  */
 
 export enum FontSize {
-  Xs = "0.76rem",
-  Sm = "0.82rem",
-  Md = "1.0rem",
-  Lg = "1.08rem",
-  Xl = "2.06rem",
-  Xxl = "3.04rem",
+  Xs = "0.7rem",
+  Sm = "0.8rem",
+  Md = "0.95rem",
+  Lg = "1.2rem",
+  Xl = "1.5rem",
+  Xl1 = "2.0rem",
+  Xl2 = "3.0rem",
 }
 
 export enum FontWeight {

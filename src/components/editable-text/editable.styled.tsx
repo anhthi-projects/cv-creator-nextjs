@@ -4,16 +4,22 @@ import { Color } from "@src/styles/variables";
 
 import { EditableTextProps } from "./editable-text.types";
 
-export const EditableWrapper = styled.div`
+export const Wrapper = styled.div`
   ${(props: EditableTextProps) => css`
     width: 100%;
-    min-height: 30px;
-    font-size: ${props.fontSize};
-    font-weight: ${props.fontWeight};
-    color: ${props.text ? Color.Blue : Color.Light6};
     display: flex;
     align-items: center;
-    padding: 0 6px;
+    padding: 4px 6px;
+
+    span,
+    input {
+      font-size: ${props.fontSize};
+      font-weight: ${props.fontWeight};
+    }
+
+    span {
+      color: ${props.text ? props.color : Color.Light6};
+    }
 
     input {
       border: none;
@@ -22,9 +28,7 @@ export const EditableWrapper = styled.div`
       padding: 0 6px;
       flex-grow: 1;
       align-self: stretch;
-      font-size: ${props.fontSize};
-      font-weight: ${props.fontWeight};
-      color: ${props.text ? Color.Blue : Color.Light3};
+      color: ${props.text ? props.color : Color.Light3};
       background-color: ${Color.Light1};
       border-radius: 3px;
     }

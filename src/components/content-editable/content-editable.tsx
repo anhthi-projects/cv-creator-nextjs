@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { Color, FontSize, FontWeight } from "@src/styles/variables";
 
 import { Paragraph } from "./content-editable.styled";
@@ -10,6 +12,7 @@ const ContentEditable = (props: ContentEditableProps) => {
     color = Color.Light7,
     fontSize = FontSize.Md,
     fontWeight = FontWeight.Normal,
+    textAlign = "left",
     className,
     noMargin,
   } = props;
@@ -19,10 +22,12 @@ const ContentEditable = (props: ContentEditableProps) => {
       color={color}
       fontSize={fontSize}
       fontWeight={fontWeight}
+      textAlign={textAlign}
       placeholder={placeholder}
       className={className}
       noMargin={noMargin}
       contentEditable
+      suppressContentEditableWarning
     >
       {text}
     </Paragraph>

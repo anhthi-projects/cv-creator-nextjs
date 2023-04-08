@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-import { Color, Page, Space } from "@src/styles/variables";
 import ContentEditable from "@src/components/content-editable/content-editable";
+import { Color, Page, Space } from "@src/styles/variables";
 
 export const PageWrapper = styled.div`
   width: 100%;
@@ -10,17 +10,6 @@ export const PageWrapper = styled.div`
   background-color: ${Color.White};
   margin: 80px auto 50px;
   padding: ${Page.Padding};
-  display: flex;
-`;
-
-export const LeftColumn = styled.div`
-  width: ${Page.LeftColumnWidth};
-  margin-right: 20px;
-`;
-
-export const RightColumn = styled.div`
-  flex-grow: 1;
-  margin-left: 20px;
 `;
 
 export const YourName = styled(ContentEditable)`

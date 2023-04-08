@@ -6,7 +6,8 @@ export enum Page {
   Width = "1190px",
   Ratio = 1.4145161,
   Padding = "70px",
-  LeftColumnWidth = "320px",
+  SmallLeftColWidth = "300px",
+  LargeLeftColWidth = "360px",
 }
 
 /*
@@ -65,10 +66,12 @@ export enum Space {
   px6 = "6px",
   px8 = "8px",
   px12 = "12px",
-  px16 = "14px",
+  px16 = "16px",
   px20 = "20px",
   px28 = "28px",
-  px32 = "32px",
+  px36 = "36px",
+  px44 = "44px",
+  px56 = "56px",
 }
 
 /*

@@ -33,8 +33,8 @@ export const FileUploader = styled.label`
 `;
 
 export const AvatarWrapper = styled.div`
-  width: 260px;
-  height: 260px;
+  width: 240px;
+  height: 240px;
   margin: auto;
   position: relative;
 

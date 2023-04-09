@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 
-import { FontSize } from "@src/styles/variables";
+import { FontSize, Space } from "@src/styles/variables";
 
 export const PreviewPhoto = styled.div`
   position: absolute;
@@ -33,9 +33,9 @@ export const FileUploader = styled.label`
 `;
 
 export const AvatarWrapper = styled.div`
-  width: 240px;
-  height: 240px;
-  margin: auto;
+  width: 220px;
+  height: 220px;
+  margin: 0 auto ${Space.px36};
   position: relative;
 
   &:has(${PreviewPhoto}):hover {

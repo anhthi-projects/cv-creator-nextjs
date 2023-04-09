@@ -5,9 +5,8 @@
 export enum Page {
   Width = "1190px",
   Ratio = 1.4145161,
-  Padding = "70px",
-  SmallLeftColWidth = "300px",
-  LargeLeftColWidth = "360px",
+  Padding = "70px 50px",
+  LeftColWidth = "360px",
 }
 
 /*
@@ -15,7 +14,7 @@ export enum Page {
  */
 
 export enum Color {
-  Primary = "#0773e8",
+  Primary = "#16a085",
   White = "#ffffff",
   Blue = "#0773e8",
 

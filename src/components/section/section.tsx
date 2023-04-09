@@ -12,9 +12,10 @@ const Section: FC<SectionProps> = ({ title, content, ...restProps }) => {
     <Box {...restProps}>
       <Title
         text={title}
+        placeholder={title}
         color={Color.Light10}
         fontSize={FontSize.Lg}
-        fontWeight={FontWeight.Bold}
+        fontWeight={FontWeight.SemiBold}
         textAlign="center"
       />
       {content}

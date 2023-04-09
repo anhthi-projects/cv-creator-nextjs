@@ -13,7 +13,7 @@ export const PageWrapper = styled.div`
 `;
 
 export const YourName = styled(ContentEditable)`
-  margin: 0 0 ${Space.px12};
+  margin: 0 0 ${Space.px6};
 `;
 
 export const YourPosition = styled(ContentEditable)`

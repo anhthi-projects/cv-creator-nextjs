@@ -1,4 +1,7 @@
+import { FC } from "react";
+
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 import ContentEditable from "@src/components/content-editable/content-editable";
 import { Box, Flex } from "@src/components/layout";
@@ -15,7 +18,10 @@ import Avatar from "./avatar";
 import { PageWrapper } from "./design.styled";
 import SideBar from "./sidebar/sidebar";
 
-const Designing = () => {
+const Design = () => {
+  const { query } = useRouter();
+  const isInPreview = query.m === "preview";
+
   const renderNameAndPosition = () => {
     return (
       <>
@@ -65,8 +71,8 @@ const Designing = () => {
       <Head>
         <title>Design your CV</title>
       </Head>
-      <SideBar />
-      <PageWrapper>
+      {!isInPreview && <SideBar />}
+      <PageWrapper isInPreview={isInPreview}>
         <Flex>
           <Box
             width={Page.LeftColWidth}
@@ -93,4 +99,4 @@ const Designing = () => {
   );
 };
 
-export default Designing;
+export default Design;

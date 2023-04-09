@@ -3,7 +3,7 @@
  */
 
 export enum Page {
-  Width = "1190px",
+  Width = "1200px",
   Ratio = 1.4145161,
   Padding = "70px 50px",
   LeftColWidth = "360px",

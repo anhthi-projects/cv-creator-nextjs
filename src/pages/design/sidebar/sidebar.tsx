@@ -3,6 +3,7 @@ import { useMemo } from "react";
 import PanelTools from "./panel-tools/panel-tools";
 import { PanelTool } from "./panel-tools/panel-tools.types";
 import { Wrapper } from "./sidebar.styled";
+import puppeteer from "puppeteer";
 
 const SideBar = () => {
   const editTools = useMemo<PanelTool[]>(
@@ -43,7 +44,7 @@ const SideBar = () => {
       },
       {
         iconName: "download.svg",
-        onClick: () => {},
+        onClick: async () => {},
       },
     ],
     []

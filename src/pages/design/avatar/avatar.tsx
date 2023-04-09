@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from "react";
 
-import Image from "next/image";
+import SVG from "react-inlinesvg";
 
 import {
   AvatarWrapper,
@@ -45,12 +45,7 @@ const Avatar = () => {
   const renderFileUploader = () => {
     return (
       <FileUploader htmlFor="file-uploader" hidden={!!base64Photo}>
-        <Image
-          width={32}
-          height={32}
-          src="/static/icons/camera.svg"
-          alt="Select your photo"
-        />
+        <SVG width={32} height={32} src="/static/icons/camera.svg" />
         <SelectYourPhoto>Select your photo</SelectYourPhoto>
         <InputFile
           id="file-uploader"

@@ -12,8 +12,8 @@ import {
 } from "@src/styles/variables";
 
 import Avatar from "./avatar";
-import { PageWrapper, YourName, YourPosition } from "./design.styled";
-import EditTools from "./edit-tools";
+import { PageWrapper } from "./design.styled";
+import SideBar from "./sidebar/sidebar";
 
 const Designing = () => {
   const renderNameAndPosition = () => {
@@ -65,7 +65,7 @@ const Designing = () => {
       <Head>
         <title>Design your CV</title>
       </Head>
-      <EditTools />
+      <SideBar />
       <PageWrapper>
         <Flex>
           <Box

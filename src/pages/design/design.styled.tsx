@@ -8,8 +8,9 @@ export const PageWrapper = styled.div`
   max-width: ${Page.Width};
   min-height: calc(${Page.Width} * ${Page.Ratio});
   background-color: ${Color.White};
-  margin: 80px auto 50px;
+  margin: 80px auto;
   padding: ${Page.Padding};
+  box-shadow: rgba(0, 0, 0, 0.3) 0.4rem 0.7rem 9.3rem 0.3rem;
 `;
 
 export const YourName = styled(ContentEditable)`

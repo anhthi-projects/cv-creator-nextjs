@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 
-import { FontSize, Space } from "@src/styles/variables";
+import { Color, FontSize, Space } from "@src/styles/variables";
 
 export const PreviewPhoto = styled.div`
   position: absolute;
@@ -12,6 +12,8 @@ export const PreviewPhoto = styled.div`
   background-image: "";
   background-size: cover;
   background-repeat: no-repeat;
+  box-shadow: 0px 1px 17px -3px rgba(0, 0, 0, 0.37);
+  border: 2px solid ${Color.White};
 `;
 
 export const FileUploader = styled.label`

@@ -3,15 +3,14 @@ import { useMemo } from "react";
 import PanelTools from "./panel-tools/panel-tools";
 import { PanelTool } from "./panel-tools/panel-tools.types";
 import { Wrapper } from "./sidebar.styled";
-import puppeteer from "puppeteer";
 
 const SideBar = () => {
   const editTools = useMemo<PanelTool[]>(
     () => [
       {
         iconName: "template.svg",
-        width: 23,
-        height: 23,
+        width: 22,
+        height: 22,
         onClick: () => {},
       },
       {
@@ -28,8 +27,8 @@ const SideBar = () => {
       },
       {
         iconName: "color.svg",
-        width: 24,
-        height: 24,
+        width: 23,
+        height: 23,
         onClick: () => {},
       },
     ],
@@ -41,6 +40,12 @@ const SideBar = () => {
       {
         iconName: "save.svg",
         onClick: () => {},
+      },
+      {
+        iconName: "preview.svg",
+        width: 24,
+        height: 24,
+        onClick: async () => {},
       },
       {
         iconName: "download.svg",

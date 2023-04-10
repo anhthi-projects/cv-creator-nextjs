@@ -1,6 +1,12 @@
 # cv-creator-ssr
 
-Refer
+Requirement
 
-- https://pspdfkit.com/blog/2019/html-to-pdf-in-javascript/
-- https://www.bannerbear.com/blog/how-to-convert-html-into-pdf-with-node-js-and-puppeteer/#method-1-downloading-pdf-from-a-web-page-using-url
+- Support responsive on both desktop and mobile
+- Support multi templates without input the info every time
+- Edit the content, drag and drop sections to re-layout
+- Login with Google, Facebook or Linkedin to save design progress, cv info and pdf files
+- Allow to edit and export pdf file without login
+- Support multi languages
+- Good for SEO
+- Able to cut avatar from image

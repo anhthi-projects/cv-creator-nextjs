@@ -3,7 +3,8 @@
  */
 
 export enum Page {
-  Width = "1200px",
+  Width = 1200,
+  WidthPx = "1200px",
   Ratio = 1.4145161,
   Padding = "70px 50px",
   LeftColWidth = "360px",
@@ -56,7 +57,7 @@ export enum FontWeight {
 }
 
 /*
- * Font
+ * Space
  */
 
 export enum Space {
@@ -71,6 +72,22 @@ export enum Space {
   px36 = "36px",
   px44 = "44px",
   px56 = "56px",
+}
+
+/*
+ * Space
+ */
+
+export enum ZIndex {
+  z10 = 10,
+  z20 = 20,
+  z30 = 30,
+  z40 = 40,
+  z50 = 50,
+  z60 = 60,
+  z70 = 70,
+  z80 = 80,
+  z90 = 90,
 }
 
 /*

@@ -3,10 +3,10 @@ import styled, { css } from "styled-components";
 import ContentEditable from "@src/components/content-editable/content-editable";
 import { Color, Page, Space } from "@src/styles/variables";
 
-export const PageWrapper = styled.div`
+export const Wrapper = styled.div`
   width: 100%;
-  max-width: ${Page.Width};
-  min-height: calc(${Page.Width} * ${Page.Ratio});
+  max-width: ${Page.WidthPx};
+  min-height: calc(${Page.WidthPx} * ${Page.Ratio});
   background-color: ${Color.White};
   padding: ${Page.Padding};
 

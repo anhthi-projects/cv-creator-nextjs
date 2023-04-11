@@ -16,6 +16,7 @@ import AboutMe from "./about-me/about-me";
 import Avatar from "./avatar/avatar";
 import Contact from "./contact/contact";
 import { LeftColumn, RightColumn, Wrapper } from "./cv-page.styled";
+import Education from "./education/education";
 
 const CvPage = () => {
   const { query } = useRouter();
@@ -55,6 +56,7 @@ const CvPage = () => {
           <Box height={Space.px28} />
           <Contact />
           <AboutMe />
+          <Education />
         </LeftColumn>
         <RightColumn>
           <Section

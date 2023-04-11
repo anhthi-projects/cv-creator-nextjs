@@ -15,7 +15,7 @@ import {
 import AboutMe from "./about-me/about-me";
 import Avatar from "./avatar/avatar";
 import Contact from "./contact/contact";
-import { Wrapper } from "./cv-page.styled";
+import { LeftColumn, RightColumn, Wrapper } from "./cv-page.styled";
 
 const CvPage = () => {
   const { query } = useRouter();
@@ -49,18 +49,14 @@ const CvPage = () => {
   return (
     <Wrapper isInPreview={isInPreview}>
       <Flex>
-        <Box
-          width={Page.LeftColWidth}
-          minWidth={Page.LeftColWidth}
-          marginLeft={Space.px12}
-          marginRight={Space.px36}
-        >
+        <LeftColumn>
           <Avatar />
           {renderNameAndPosition()}
+          <Box height={Space.px28} />
           <Contact />
           <AboutMe />
-        </Box>
-        <Flex flexGrow="1" flexDirection="column">
+        </LeftColumn>
+        <RightColumn>
           <Section
             title="Working Experience"
             content={
@@ -70,7 +66,7 @@ const CvPage = () => {
               />
             }
           />
-        </Flex>
+        </RightColumn>
       </Flex>
     </Wrapper>
   );

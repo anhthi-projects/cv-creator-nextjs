@@ -3,11 +3,11 @@
  */
 
 export enum Page {
-  Width = 1200,
-  WidthPx = "1200px",
-  Ratio = 1.4145161,
-  Padding = "70px 50px",
-  LeftColWidth = "360px",
+  Width = 1000,
+  WidthPx = "1000px",
+  Ratio = 1.402,
+  Padding = "80px 50px",
+  LeftColWidth = "320px",
 }
 
 /*
@@ -40,10 +40,11 @@ export enum Color {
  */
 
 export enum FontSize {
-  Xs = "0.65rem",
-  Sm = "0.8rem",
-  Md = "0.95rem",
-  Lg = "1.1rem",
+  Base = "16px",
+  Xs = "0.70rem",
+  Sm = "0.85rem",
+  Md = "1.0rem",
+  Lg = "1.15rem",
   Xl = "1.3rem",
   Xl1 = "1.6rem",
   Xl2 = "2.0rem",
@@ -73,6 +74,7 @@ export enum Space {
   px36 = "36px",
   px44 = "44px",
   px56 = "56px",
+  px70 = "70px",
 }
 
 /*
@@ -95,8 +97,10 @@ export enum ZIndex {
  * Breakpoints
  */
 
-export const sm = "640px";
-export const md = "768px";
-export const lg = "1024px";
-export const xl = "1280px";
-export const xxl = "1536px";
+export enum Breakpoint {
+  Sm = "640px",
+  Md = "768px",
+  Lg = "1024px",
+  Xl = "1280px",
+  Xxl = "1536px",
+}

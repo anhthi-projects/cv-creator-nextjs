@@ -12,6 +12,7 @@ export const Wrapper = styled.div`
   flex-direction: column;
   margin: ${Space.px8} 0;
   box-shadow: rgba(0, 0, 0, 0.3) 0.4rem 0.7rem 9.3rem 0.3rem;
+  border: 0.5px solid ${Color.Light3};
 `;
 
 export const Tool = styled.div`

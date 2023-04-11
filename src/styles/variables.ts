@@ -4,10 +4,10 @@
 
 export enum Page {
   Width = 1000,
-  WidthPx = "1000px",
-  Ratio = 1.402,
-  Padding = "80px 50px",
-  LeftColWidth = "320px",
+  Heigh = 1000 * 1.402,
+  PadTopBottom = 70,
+  PadLeftRight = 50,
+  LeftColWidth = 320,
 }
 
 /*

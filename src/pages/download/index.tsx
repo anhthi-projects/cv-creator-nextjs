@@ -18,10 +18,10 @@ export async function getServerSideProps() {
       scale: 800 / Page.Width,
       format: "a4",
       margin: {
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
+        top: Page.PadTopBottom - 10,
+        right: Page.PadLeftRight - 10,
+        bottom: Page.PadTopBottom - 10,
+        left: Page.PadLeftRight - 10,
       },
     });
 

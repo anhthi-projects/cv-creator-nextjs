@@ -1,10 +1,15 @@
 import { useMemo } from "react";
 
+import { useRouter } from "next/router";
+
 import PanelTools from "./panel-tools/panel-tools";
 import { PanelTool } from "./panel-tools/panel-tools.types";
 import { Wrapper } from "./sidebar.styled";
 
 const SideBar = () => {
+  const { query } = useRouter();
+  const isInPreview = query.mo === "preview";
+
   const editTools = useMemo<PanelTool[]>(
     () => [
       {
@@ -54,6 +59,14 @@ const SideBar = () => {
     ],
     []
   );
+
+  /**
+   * Render
+   */
+
+  if (isInPreview) {
+    return null;
+  }
 
   return (
     <Wrapper>

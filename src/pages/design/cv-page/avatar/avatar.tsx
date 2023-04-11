@@ -46,7 +46,9 @@ const Avatar = () => {
     return (
       <FileUploader htmlFor="file-uploader" hidden={!!base64Photo}>
         <SVG width={32} height={32} src="/static/icons/camera.svg" />
-        <SelectYourPhoto>Select your photo</SelectYourPhoto>
+        <SelectYourPhoto>
+          {base64Photo ? "Change your photo" : "Select your photo"}
+        </SelectYourPhoto>
         <InputFile
           id="file-uploader"
           type="file"

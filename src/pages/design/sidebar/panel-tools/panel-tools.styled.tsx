@@ -18,14 +18,14 @@ export const Tool = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 2px;
-  margin: 5px;
+  margin: ${Space.px6};
   cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
 
   &:last-child {
-    margin-bottom: 5px;
+    margin-bottom: ${Space.px6};
   }
 
   &:hover {

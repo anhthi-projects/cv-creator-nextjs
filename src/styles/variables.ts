@@ -16,6 +16,7 @@ export enum Page {
 
 export enum Color {
   Primary = "#16a085",
+  PrimaryDarker = "#13816B",
   White = "#ffffff",
   Blue = "#0773e8",
 
@@ -39,13 +40,13 @@ export enum Color {
  */
 
 export enum FontSize {
-  Xs = "0.7rem",
+  Xs = "0.65rem",
   Sm = "0.8rem",
   Md = "0.95rem",
-  Lg = "1.2rem",
-  Xl = "1.5rem",
-  Xl1 = "2.0rem",
-  Xl2 = "3.0rem",
+  Lg = "1.1rem",
+  Xl = "1.3rem",
+  Xl1 = "1.6rem",
+  Xl2 = "2.0rem",
 }
 
 export enum FontWeight {

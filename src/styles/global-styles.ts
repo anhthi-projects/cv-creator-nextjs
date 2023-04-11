@@ -12,7 +12,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: ${Color.Light4};
+    background-color: ${Color.Light10};
     border-radius: 5px;
   }
 

@@ -1,14 +1,17 @@
-import { useState } from "react";
+import SVG from "react-inlinesvg";
 
-import { Color, FontSize, FontWeight } from "@src/styles/variables";
+import { Color, FontSize, FontWeight, Space } from "@src/styles/variables";
 
-import { Paragraph } from "./content-editable.styled";
+import { Flex } from "../layout";
+
+import { Paragraph, Wrapper } from "./content-editable.styled";
 import { ContentEditableProps } from "./content-editable.types";
 
-const ContentEditable = (props: ContentEditableProps) => {
+export const ContentEditable = (props: ContentEditableProps) => {
   const {
     text,
-    placeholder,
+    icon,
+    placeholder = "Empty",
     color = Color.Light7,
     fontSize = FontSize.Md,
     fontWeight = FontWeight.Normal,
@@ -17,21 +20,42 @@ const ContentEditable = (props: ContentEditableProps) => {
     noMargin,
   } = props;
 
-  return (
-    <Paragraph
-      color={color}
-      fontSize={fontSize}
-      fontWeight={fontWeight}
-      textAlign={textAlign}
-      placeholder={placeholder}
-      className={className}
-      noMargin={noMargin}
-      contentEditable
-      suppressContentEditableWarning
-    >
-      {text}
-    </Paragraph>
-  );
-};
+  /**
+   * Render
+   */
 
-export default ContentEditable;
+  const renderParagraph = () => {
+    return (
+      <Paragraph
+        color={color}
+        fontSize={fontSize}
+        fontWeight={fontWeight}
+        textAlign={textAlign}
+        placeholder={placeholder}
+        className={className}
+        noMargin={noMargin}
+        suppressContentEditableWarning
+        contentEditable
+        onSelect={(e) => {
+          console.log(window.getSelection()?.toString());
+        }}
+      >
+        {text}
+      </Paragraph>
+    );
+  };
+
+  if (icon) {
+    return (
+      <Wrapper>
+        <SVG
+          src={`/static/icons/${icon.iconName}`}
+          width={icon.width || 22}
+          height={icon.height || 22}
+        />
+        {renderParagraph()}
+      </Wrapper>
+    );
+  }
+  return renderParagraph();
+};

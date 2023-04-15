@@ -16,6 +16,16 @@ const GlobalStyles = createGlobalStyle`
     border-radius: 5px;
   }
 
+  ::-moz-selection {
+    color: ${Color.White};
+    background: ${Color.Primary};
+  }
+
+  ::selection {
+    color: ${Color.White};
+    background: ${Color.Primary};
+  }
+
   
   html,
   body {

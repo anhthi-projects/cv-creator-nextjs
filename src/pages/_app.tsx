@@ -1,7 +1,7 @@
 import { AppProps } from "next/app";
+import Head from "next/head";
 
 import GlobalStyles from "@src/styles/global-styles";
-import Head from "next/head";
 
 const App: React.FC<AppProps> = (props) => {
   const { Component, pageProps } = props;

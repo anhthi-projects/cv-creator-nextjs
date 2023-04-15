@@ -12,9 +12,12 @@ import {
  * Flex
  */
 
-export interface FlexLayout extends FlexboxProps, SpaceProps, LayoutProps {}
+export interface FlexLayoutProps
+  extends FlexboxProps,
+    SpaceProps,
+    LayoutProps {}
 
-export const Flex = styled.div<FlexLayout>`
+export const Flex = styled.div<FlexLayoutProps>`
   display: flex;
   ${flexbox}
   ${space}
@@ -25,9 +28,9 @@ export const Flex = styled.div<FlexLayout>`
  * Box
  */
 
-export interface BoxLayout extends SpaceProps, LayoutProps {}
+export interface BoxLayoutProps extends SpaceProps, LayoutProps {}
 
-export const Box = styled.div<BoxLayout>`
+export const Box = styled.div<BoxLayoutProps>`
   ${space}
   ${layout}
 `;

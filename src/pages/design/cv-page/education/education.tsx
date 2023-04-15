@@ -1,48 +1,17 @@
-import ContentEditable from "@src/components/content-editable/content-editable";
-import Section from "@src/components/section/section";
+import { SectionContent } from "@src/components/section-content";
 import { Space } from "@src/styles/variables";
 
 const Education = () => {
   return (
-    <Section
+    <SectionContent
       title="Education"
       marginTop={Space.px56}
-      content={
-        <>
-          <ContentEditable
-            text="- Got a Profession Bachelor of Computer Technology from AeU University"
-            placeholder="Share something about yourself"
-          />
-          <ContentEditable
-            text="- Got a Profession Bachelor of Computer Technology from AeU University"
-            placeholder="Share something about yourself"
-          />
-          <ContentEditable
-            text="- Got a Profession Bachelor of Computer Technology from AeU University"
-            placeholder="Share something about yourself"
-          />
-          <ContentEditable
-            text="- Got a Profession Bachelor of Computer Technology from AeU University"
-            placeholder="Share something about yourself"
-          />
-          <ContentEditable
-            text="- Got a Profession Bachelor of Computer Technology from AeU University"
-            placeholder="Share something about yourself"
-          />
-          <ContentEditable
-            text="- Got a Profession Bachelor of Computer Technology from AeU University"
-            placeholder="Share something about yourself"
-          />
-          <ContentEditable
-            text="- Got a Profession Bachelor of Computer Technology from AeU University"
-            placeholder="Share something about yourself"
-          />
-          <ContentEditable
-            text="- Got a Profession Bachelor of Computer Technology from AeU University"
-            placeholder="Share something about yourself"
-          />
-        </>
-      }
+      contents={[
+        {
+          key: "asd",
+          text: "- Got a Profession Bachelor of Computer Technology from AeU University",
+        },
+      ]}
     />
   );
 };

@@ -1,16 +1,8 @@
 import { useRouter } from "next/router";
 
-import ContentEditable from "@src/components/content-editable/content-editable";
-import ContentEditableEnhance from "@src/components/content-editable-enhance/content-editable-enhance";
+import { ContentEditable } from "@src/components/content-editable";
 import { Box, Flex } from "@src/components/layout";
-import Section from "@src/components/section/section";
-import {
-  Color,
-  FontSize,
-  FontWeight,
-  Page,
-  Space,
-} from "@src/styles/variables";
+import { Color, FontSize, FontWeight, Space } from "@src/styles/variables";
 
 import AboutMe from "./about-me/about-me";
 import Avatar from "./avatar/avatar";
@@ -58,17 +50,7 @@ const CvPage = () => {
           <AboutMe />
           <Education />
         </LeftColumn>
-        <RightColumn>
-          <Section
-            title="Working Experience"
-            content={
-              <ContentEditable
-                placeholder="What did you learning from working years?"
-                text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book"
-              />
-            }
-          />
-        </RightColumn>
+        <RightColumn>right</RightColumn>
       </Flex>
     </Wrapper>
   );

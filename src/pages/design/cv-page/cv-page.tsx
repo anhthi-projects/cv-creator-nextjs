@@ -18,7 +18,7 @@ const CvPage = () => {
     return (
       <>
         <ContentEditable
-          text="Thi Nguyen Anh"
+          content="Thi Nguyen Anh"
           placeholder="Your name"
           color={Color.Primary}
           fontSize={FontSize.Xl2}
@@ -27,7 +27,7 @@ const CvPage = () => {
           noMargin
         />
         <ContentEditable
-          text="Senior Developer"
+          content="Senior Developer"
           placeholder="Your position"
           color={Color.Light8}
           fontSize={FontSize.Lg}

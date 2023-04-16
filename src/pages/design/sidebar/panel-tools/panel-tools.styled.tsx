@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 import { Color, Space } from "@src/styles/variables";
 
-export const Wrapper = styled.div`
+export const PanelWrapper = styled.div`
   color: ${Color.White};
   background-color: ${Color.Light1};
   border-radius: 4px;
@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
   border: 0.5px solid ${Color.Light3};
 `;
 
-export const Tool = styled.div`
+export const ToolItem = styled.div`
   width: 40px;
   height: 40px;
   border-radius: 2px;

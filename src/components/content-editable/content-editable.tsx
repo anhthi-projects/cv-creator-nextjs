@@ -1,16 +1,19 @@
+import { useRef, useState } from "react";
+
 import SVG from "react-inlinesvg";
 
 import { Color, FontSize, FontWeight } from "@src/styles/variables";
+import { getIconPath } from "@src/utils/helpers";
 
 import { tooltip } from "../tooltip";
 
 import { Content, Wrapper } from "./content-editable.styled";
 import { ContentEditableProps } from "./content-editable.types";
-import { getIconPath } from "@src/utils/helpers";
+import FormatTextBar from "./format-bar/format-bar";
 
 export const ContentEditable = (props: ContentEditableProps) => {
   const {
-    text,
+    content,
     icon,
     placeholder = "Empty",
     color = Color.Light7,
@@ -21,22 +24,39 @@ export const ContentEditable = (props: ContentEditableProps) => {
     noMargin,
   } = props;
 
+  const [controlledContent, setControlledContent] = useState(content);
+  const formatTextBarRef = useRef<HTMLDivElement>(null);
+
+  const handleBold = () => {
+    const selection = window.getSelection()?.toString();
+  };
+
+  const handleItalic = () => {};
+
+  const handleUnderline = () => {};
+
   const handleTextSelect = () => {
     const selection = window.getSelection();
     const rangeRect = selection?.getRangeAt(0).getBoundingClientRect();
-    const formatTextTooltip = document.getElementById("formatTextTooltip");
 
     if (selection?.toString() === "" || !rangeRect) {
       return;
     }
 
-    const tooltipWidth = formatTextTooltip?.clientWidth || 0;
-    const tooltipHeight = formatTextTooltip?.clientHeight || 0;
-    const topPos = window.scrollY + rangeRect.top - tooltipHeight - 7;
-    const leftPos = rangeRect.right - tooltipWidth;
+    const formatBarWidth = formatTextBarRef.current?.clientWidth || 0;
+    const formatBarHeight = formatTextBarRef.current?.clientHeight || 0;
+    const topPos = window.scrollY + rangeRect.top - formatBarHeight - 7;
+    const leftPos = rangeRect.right - formatBarWidth / 2;
 
     tooltip.open({
-      content: "hello world",
+      content: (
+        <FormatTextBar
+          onBold={handleBold}
+          onItalic={handleItalic}
+          onUnderline={handleUnderline}
+          ref={formatTextBarRef}
+        />
+      ),
       position: {
         x: topPos,
         y: leftPos,
@@ -61,7 +81,7 @@ export const ContentEditable = (props: ContentEditableProps) => {
         contentEditable
         onSelect={handleTextSelect}
       >
-        {text}
+        {controlledContent}
       </Content>
     );
   };

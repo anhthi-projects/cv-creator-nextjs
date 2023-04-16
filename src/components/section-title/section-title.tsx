@@ -8,7 +8,7 @@ import { SectionTitleProps } from "./section-title.types";
 export const SectionTitle: FC<SectionTitleProps> = ({ title }) => {
   return (
     <Title
-      text={title}
+      content={title}
       placeholder={title}
       color={Color.Light10}
       fontSize={FontSize.Lg}

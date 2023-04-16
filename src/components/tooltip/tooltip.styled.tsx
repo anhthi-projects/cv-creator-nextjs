@@ -14,8 +14,20 @@ export const TooltipWrapper = styled.div`
     background-color: ${Color.Light12};
     color: ${Color.White};
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-    padding: ${Space.px4} ${Space.px6};
     border-radius: 3px;
-    position: absolute;
+
+    &::before {
+      content: "";
+      display: block;
+      width: 0;
+      height: 0;
+      border-top: 5px solid ${Color.Light12};
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
   `}
 `;

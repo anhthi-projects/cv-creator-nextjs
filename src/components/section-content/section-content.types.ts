@@ -6,7 +6,7 @@ import { ContentEditableProps } from "../content-editable";
 
 export type ContentProps = Pick<
   ContentEditableProps,
-  "text" | "placeholder" | "icon"
+  "content" | "placeholder" | "icon"
 > & {
   key: string;
 };

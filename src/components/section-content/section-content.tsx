@@ -15,10 +15,10 @@ export const SectionContent: FC<SectionContentProps> = ({
   return (
     <Box {...boxProps}>
       <SectionTitle title={title} />
-      {contents.map(({ key, text, placeholder, icon }) => (
+      {contents.map(({ key, content, placeholder, icon }) => (
         <ContentEditable
           key={key}
-          text={text}
+          content={content}
           placeholder={placeholder}
           icon={icon}
         />

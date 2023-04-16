@@ -31,7 +31,7 @@ const SideBar = () => {
         onClick: () => {},
       },
       {
-        iconName: "color.svg",
+        iconName: "theme-color-picker.svg",
         width: 23,
         height: 23,
         onClick: () => {},

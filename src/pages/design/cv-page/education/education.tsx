@@ -9,7 +9,8 @@ const Education = () => {
       contents={[
         {
           key: "asd",
-          text: "- Got a Profession Bachelor of Computer Technology from AeU University",
+          content:
+            "- Got a Profession Bachelor of Computer Technology from AeU University",
         },
       ]}
     />

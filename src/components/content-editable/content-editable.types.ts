@@ -9,7 +9,7 @@ export interface IconProps {
 }
 
 export interface ContentEditableProps {
-  text?: ReactNode;
+  content?: ReactNode;
   placeholder?: string;
   color?: Color;
   fontSize?: FontSize;

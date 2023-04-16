@@ -9,7 +9,7 @@ type StyledParagraph = Omit<
   "value" | "placeholder" | "icon"
 >;
 
-export const Paragraph = styled.p<StyledParagraph>`
+export const Content = styled.div<StyledParagraph>`
   ${(props) => css`
     color: ${props.color};
     font-size: ${props.fontSize};
@@ -35,7 +35,7 @@ export const Wrapper = styled.div`
   display: flex;
   align-items: center;
 
-  ${Paragraph} {
+  ${Content} {
     margin: ${Space.px4} 0 ${Space.px4} ${Space.px12};
   }
 `;

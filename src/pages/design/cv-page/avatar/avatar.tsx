@@ -9,6 +9,7 @@ import {
   PreviewPhoto,
   SelectYourPhoto,
 } from "./avatar.styled";
+import { getIconPath } from "@src/utils/helpers";
 
 const Avatar = () => {
   const [base64Photo, setBase64Photo] = useState("");
@@ -45,7 +46,7 @@ const Avatar = () => {
   const renderFileUploader = () => {
     return (
       <FileUploader htmlFor="file-uploader" hidden={!!base64Photo}>
-        <SVG width={32} height={32} src="/static/icons/camera.svg" />
+        <SVG width={32} height={32} src={getIconPath("camera.svg")} />
         <SelectYourPhoto>
           {base64Photo ? "Change your photo" : "Select your photo"}
         </SelectYourPhoto>

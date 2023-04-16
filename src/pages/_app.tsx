@@ -1,6 +1,7 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
 
+import { Tooltip } from "@src/components/tooltip";
 import GlobalStyles from "@src/styles/global-styles";
 
 const App: React.FC<AppProps> = (props) => {
@@ -18,6 +19,7 @@ const App: React.FC<AppProps> = (props) => {
       </Head>
       <GlobalStyles />
       <Component {...pageProps} />
+      <Tooltip id="formatTextTooltip" />
     </>
   );
 };

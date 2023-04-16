@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 
 interface UseInOutsideClick {
-  insideCallback: () => void;
-  outsideCallback: () => void;
+  insideCallback?: () => void;
+  outsideCallback?: () => void;
 }
 
 export const useInOutsideClick = <ElementType extends HTMLElement>({
@@ -14,9 +14,12 @@ export const useInOutsideClick = <ElementType extends HTMLElement>({
   useEffect(() => {
     const handleClick = (event: any) => {
       if (elementRef.current && elementRef.current.contains(event.target)) {
-        insideCallback();
-      } else {
-        outsideCallback();
+        typeof insideCallback === "function" && insideCallback();
+        return;
+      }
+
+      if (elementRef.current && !elementRef.current.contains(event.target)) {
+        typeof outsideCallback === "function" && outsideCallback();
       }
     };
 

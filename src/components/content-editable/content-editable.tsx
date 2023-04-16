@@ -1,11 +1,12 @@
 import SVG from "react-inlinesvg";
 
-import { Color, FontSize, FontWeight, Space } from "@src/styles/variables";
+import { Color, FontSize, FontWeight } from "@src/styles/variables";
 
-import { Flex } from "../layout";
+import { tooltip } from "../tooltip";
 
-import { Paragraph, Wrapper } from "./content-editable.styled";
+import { Content, Wrapper } from "./content-editable.styled";
 import { ContentEditableProps } from "./content-editable.types";
+import { getIconPath } from "@src/utils/helpers";
 
 export const ContentEditable = (props: ContentEditableProps) => {
   const {
@@ -20,13 +21,35 @@ export const ContentEditable = (props: ContentEditableProps) => {
     noMargin,
   } = props;
 
+  const handleTextSelect = () => {
+    const selection = window.getSelection();
+    const rangeRect = selection?.getRangeAt(0).getBoundingClientRect();
+    const formatTextTooltip = document.getElementById("formatTextTooltip");
+
+    if (selection?.toString() === "" || !rangeRect) {
+      return;
+    }
+
+    const tooltipWidth = formatTextTooltip?.clientWidth || 0;
+    const tooltipHeight = formatTextTooltip?.clientHeight || 0;
+    const topPos = window.scrollY + rangeRect.top - tooltipHeight - 7;
+    const leftPos = rangeRect.right - tooltipWidth;
+
+    tooltip.open({
+      content: "hello world",
+      position: {
+        x: topPos,
+        y: leftPos,
+      },
+    });
+  };
   /**
    * Render
    */
 
-  const renderParagraph = () => {
+  const renderContent = () => {
     return (
-      <Paragraph
+      <Content
         color={color}
         fontSize={fontSize}
         fontWeight={fontWeight}
@@ -36,12 +59,10 @@ export const ContentEditable = (props: ContentEditableProps) => {
         noMargin={noMargin}
         suppressContentEditableWarning
         contentEditable
-        onSelect={(e) => {
-          console.log(window.getSelection()?.toString());
-        }}
+        onSelect={handleTextSelect}
       >
         {text}
-      </Paragraph>
+      </Content>
     );
   };
 
@@ -49,13 +70,13 @@ export const ContentEditable = (props: ContentEditableProps) => {
     return (
       <Wrapper>
         <SVG
-          src={`/static/icons/${icon.iconName}`}
+          src={getIconPath(icon.iconName)}
           width={icon.width || 22}
           height={icon.height || 22}
         />
-        {renderParagraph()}
+        {renderContent()}
       </Wrapper>
     );
   }
-  return renderParagraph();
+  return renderContent();
 };

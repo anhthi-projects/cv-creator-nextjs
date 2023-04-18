@@ -4,7 +4,13 @@ import SVG from "react-inlinesvg";
 
 import { getIconPath } from "@src/utils/helpers";
 
-import { Divider, FormatBarWrapper, FormatItem } from "./format-bar.styled";
+import {
+  ColorIconLabel,
+  ColorPickerInput,
+  Divider,
+  FormatBarWrapper,
+  FormatItem,
+} from "./format-bar.styled";
 import { FormatBarProps } from "./format-bar.types";
 
 const FormatTextBar = forwardRef<HTMLDivElement, FormatBarProps>(function a(
@@ -15,6 +21,16 @@ const FormatTextBar = forwardRef<HTMLDivElement, FormatBarProps>(function a(
 
   return (
     <FormatBarWrapper ref={ref}>
+      <FormatItem>
+        <ColorPickerInput type="color" id="text-color-picker" />
+        <ColorIconLabel htmlFor="text-color-picker">
+          <SVG
+            src={getIconPath("text-color-picker.svg")}
+            width={24}
+            height={24}
+          />
+        </ColorIconLabel>
+      </FormatItem>
       <FormatItem onClick={onBold}>
         <SVG src={getIconPath("bold.svg")} width={14} height={14} />
       </FormatItem>

@@ -28,7 +28,7 @@ export const Wrapper = styled.div`
       : "rgba(0, 0, 0, 0.3) 0.4rem 0.7rem 9.3rem 0.3rem"};
   `}
 
-  @media only screen and (max-width: ${Breakpoint.Lg}) {
+  @media only screen and (max-width: ${Breakpoint.Md}) {
     ${LeftColumn} {
       margin-right: 0;
       width: 100%;

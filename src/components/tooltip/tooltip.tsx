@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState } from "react";
+import { FC, ReactNode, useEffect, useState } from "react";
 
 import { createPortal } from "react-dom";
 
@@ -22,6 +22,18 @@ export const Tooltip: FC<TooltipProps> = ({ id }) => {
       // setIsOpen(false);
     },
   });
+
+  useEffect(() => {
+    const windowResize = () => {
+      setIsOpen(false);
+    };
+
+    window.addEventListener("resize", windowResize);
+
+    return () => {
+      window.removeEventListener("resize", windowResize);
+    };
+  }, []);
 
   tooltip.open = ({ content, position }) => {
     setIsOpen(true);

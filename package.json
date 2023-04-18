@@ -24,6 +24,7 @@
   "dependencies": {
     "@babel/runtime": "^7.21.0",
     "classnames": "^2.3.2",
+    "html-react-parser": "^3.0.15",
     "next": "^13.2.4",
     "next-routes-extended": "^1.7.0",
     "puppeteer": "^19.8.5",

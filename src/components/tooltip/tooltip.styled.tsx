@@ -10,7 +10,7 @@ export const TooltipWrapper = styled.div`
     position: absolute;
     top: ${`${position.x}px`};
     left: ${`${position.y}px`};
-    border: 1px solid ${Color.Light2};
+    border: 1px solid ${Color.Light12};
     background-color: ${Color.Light12};
     color: ${Color.White};
     box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;

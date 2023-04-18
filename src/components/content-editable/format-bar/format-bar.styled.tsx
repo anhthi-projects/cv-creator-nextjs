@@ -40,3 +40,14 @@ export const Divider = styled.div`
   background-color: ${Color.Light9};
   margin: 0 ${Space.px4};
 `;
+
+export const ColorPickerInput = styled.input`
+  display: none;
+`;
+
+export const ColorIconLabel = styled.label`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+`;

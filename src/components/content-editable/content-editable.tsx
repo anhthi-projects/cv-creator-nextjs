@@ -77,14 +77,6 @@ export const ContentEditable = (props: ContentEditableProps) => {
       return;
     }
 
-    console.log(selection);
-    console.log(selection.getRangeAt(0));
-
-    const formatBarWidth = formatTextBarRef.current?.clientWidth || 0;
-    const formatBarHeight = formatTextBarRef.current?.clientHeight || 0;
-    const topPos = window.scrollY + rangeRect.top - formatBarHeight - 7;
-    const leftPos = rangeRect.right - formatBarWidth / 2 - 6;
-
     tooltip.open({
       content: (
         <FormatTextBar
@@ -95,8 +87,8 @@ export const ContentEditable = (props: ContentEditableProps) => {
         />
       ),
       position: {
-        x: topPos,
-        y: leftPos,
+        top: window.scrollY + rangeRect.top,
+        left: rangeRect.right,
       },
     });
   };

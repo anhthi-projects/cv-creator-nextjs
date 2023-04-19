@@ -1,8 +1,6 @@
-import { FC, ReactNode, useEffect, useState } from "react";
+import { FC, ReactNode, useEffect, useRef, useState } from "react";
 
 import { createPortal } from "react-dom";
-
-import { useInOutsideClick } from "@src/hooks/useInOutsideClick";
 
 import { TooltipWrapper } from "./tooltip.styled";
 import { PositionProps, TooltipProps, TriggerTooltip } from "./tooltip.types";
@@ -17,11 +15,9 @@ export const Tooltip: FC<TooltipProps> = ({ id }) => {
   const [content, setContent] = useState<ReactNode>(null);
   const [position, setPosition] = useState<PositionProps>();
 
-  const tooltipRef = useInOutsideClick<HTMLDivElement>({
-    outsideCallback: () => {
-      // setIsOpen(false);
-    },
-  });
+  const tooltipRef = useRef<HTMLDivElement>(null);
+  const positionRef = useRef<PositionProps>();
+  const storedPosition = positionRef.current;
 
   useEffect(() => {
     const windowResize = () => {
@@ -35,10 +31,27 @@ export const Tooltip: FC<TooltipProps> = ({ id }) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (isOpen) {
+      const tooltipWidth = tooltipRef.current?.clientWidth || 0;
+      const tooltipHeight = tooltipRef.current?.clientHeight || 0;
+
+      const totalTop = (storedPosition?.top || 0) - tooltipHeight - 8;
+      const totalLeft = (storedPosition?.left || 0) - tooltipWidth / 2 - 6;
+
+      console.log(tooltipHeight);
+
+      setPosition({
+        top: totalTop,
+        left: totalLeft,
+      });
+    }
+  }, [isOpen, storedPosition]);
+
   tooltip.open = ({ content, position }) => {
     setIsOpen(true);
     setContent(content);
-    setPosition(position);
+    positionRef.current = position;
   };
 
   tooltip.close = () => {
@@ -47,7 +60,7 @@ export const Tooltip: FC<TooltipProps> = ({ id }) => {
     setPosition(undefined);
   };
 
-  return isOpen && position
+  return isOpen
     ? createPortal(
         <TooltipWrapper id={id} position={position} ref={tooltipRef}>
           {content}

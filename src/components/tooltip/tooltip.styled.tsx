@@ -5,11 +5,11 @@ import { Color, Space } from "@src/styles/variables";
 import { PositionProps } from "./tooltip.types";
 
 export const TooltipWrapper = styled.div`
-  ${({ position }: { position: PositionProps }) => css`
+  ${({ position }: { position?: PositionProps }) => css`
     max-width: 400px;
     position: absolute;
-    top: ${`${position.x}px`};
-    left: ${`${position.y}px`};
+    top: ${`${position?.top || 0}px`};
+    left: ${`${position?.left || 0}px`};
     border: 1px solid ${Color.Light12};
     background-color: ${Color.Light12};
     color: ${Color.White};

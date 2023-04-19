@@ -4,7 +4,7 @@ import { Color, Space } from "@src/styles/variables";
 
 export const FormatItem = styled.button`
   min-width: 28px;
-  min-height: 26px;
+  min-height: 32px;
   padding: ${Space.px4} 0;
   margin-right: ${Space.px4};
   background-color: transparent;

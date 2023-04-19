@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 
 export interface PositionProps {
-  x: number;
-  y: number;
+  top: number;
+  left: number;
 }
 
 export interface OpenProps {

@@ -21,16 +21,6 @@ const FormatTextBar = forwardRef<HTMLDivElement, FormatBarProps>(function a(
 
   return (
     <FormatBarWrapper ref={ref}>
-      <FormatItem>
-        <ColorPickerInput type="color" id="text-color-picker" />
-        <ColorIconLabel htmlFor="text-color-picker">
-          <SVG
-            src={getIconPath("text-color-picker.svg")}
-            width={24}
-            height={24}
-          />
-        </ColorIconLabel>
-      </FormatItem>
       <FormatItem onClick={onBold}>
         <SVG src={getIconPath("bold.svg")} width={14} height={14} />
       </FormatItem>
@@ -43,6 +33,16 @@ const FormatTextBar = forwardRef<HTMLDivElement, FormatBarProps>(function a(
       <Divider />
       <FormatItem onClick={onUnderline}>
         <SVG src={getIconPath("link.svg")} width={15} height={15} />
+      </FormatItem>
+      <FormatItem>
+        <ColorPickerInput type="color" id="text-color-picker" />
+        <ColorIconLabel htmlFor="text-color-picker">
+          <SVG
+            src={getIconPath("text-color-picker.svg")}
+            width={24}
+            height={24}
+          />
+        </ColorIconLabel>
       </FormatItem>
     </FormatBarWrapper>
   );

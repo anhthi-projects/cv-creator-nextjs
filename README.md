@@ -10,3 +10,7 @@ Requirement
 - Support multi languages
 - Good for SEO
 - Able to cut avatar from image
+
+Reference
+
+https://medium.com/swlh/server-side-rendering-styled-components-with-nextjs-1db1353e915e

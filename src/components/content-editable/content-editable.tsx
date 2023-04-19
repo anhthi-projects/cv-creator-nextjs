@@ -10,8 +10,11 @@ import { tooltip } from "../tooltip";
 
 import { Content, Wrapper } from "./content-editable.styled";
 import { ContentEditableProps } from "./content-editable.types";
+import {
+  applyStyleElement,
+  injectStyledElementToContent,
+} from "./content-editable.utils";
 import FormatTextBar from "./format-bar/format-bar";
-import { applyStyleElement } from "./content-editable.utils";
 
 export const ContentEditable = (props: ContentEditableProps) => {
   const {
@@ -26,34 +29,39 @@ export const ContentEditable = (props: ContentEditableProps) => {
     noMargin,
   } = props;
 
-  const [contentInText, setContentInText] = useState<string>(
+  const [controlledContent, setControlledContent] = useState<string>(
     content?.toString() || ""
   );
   const formatTextBarRef = useRef<HTMLDivElement>(null);
 
-  const formatText = (tagName: string, attrs: Record<string, string> = {}) => {
+  const formatSelection = (
+    tagName: string,
+    attrs: Record<string, string> = {}
+  ) => {
     const selection = window.getSelection();
-    const selectionInText = selection?.toString() || "";
+
+    if (!selection) {
+      return;
+    }
 
     console.log(selection);
-
+    const selectionInText = selection?.toString() || "";
     const styledElementInText = applyStyleElement({
       tagName,
       attrs,
       innerHtml: selectionInText,
     });
+    const completedContent = injectStyledElementToContent({
+      selection,
+      content: controlledContent,
+      styledElementInText,
+    });
 
-    const firstParagraph = contentInText.slice(0, selection?.anchorOffset);
-    const lastParagraph = contentInText.slice(
-      selection?.focusOffset,
-      contentInText.length
-    );
-
-    setContentInText(`${firstParagraph}${styledElementInText}${lastParagraph}`);
+    setControlledContent(completedContent);
   };
 
   const handleBold = () => {
-    formatText("strong");
+    formatSelection("strong");
     tooltip.close();
   };
 
@@ -61,15 +69,16 @@ export const ContentEditable = (props: ContentEditableProps) => {
 
   const handleUnderline = () => {};
 
-  const handleTextSelect = () => {
+  const handleTextSelection = () => {
     const selection = window.getSelection();
     const rangeRect = selection?.getRangeAt(0).getBoundingClientRect();
 
-    console.log(selection);
-
-    if (selection?.toString() === "" || !rangeRect) {
+    if (!selection || selection?.toString() === "" || !rangeRect) {
       return;
     }
+
+    console.log(selection);
+    console.log(selection.getRangeAt(0));
 
     const formatBarWidth = formatTextBarRef.current?.clientWidth || 0;
     const formatBarHeight = formatTextBarRef.current?.clientHeight || 0;
@@ -107,9 +116,9 @@ export const ContentEditable = (props: ContentEditableProps) => {
         noMargin={noMargin}
         suppressContentEditableWarning
         contentEditable
-        onSelect={handleTextSelect}
+        onSelect={handleTextSelection}
       >
-        {HTMLReactParser(contentInText)}
+        {HTMLReactParser(controlledContent)}
       </Content>
     );
   };

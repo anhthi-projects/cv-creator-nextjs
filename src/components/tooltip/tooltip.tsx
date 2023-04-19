@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useRef, useState } from "react";
+import { FC, MouseEvent, ReactNode, useEffect, useRef, useState } from "react";
 
 import { createPortal } from "react-dom";
 
@@ -18,18 +18,32 @@ export const Tooltip: FC<TooltipProps> = ({ id }) => {
   const tooltipRef = useRef<HTMLDivElement>(null);
   const positionRef = useRef<PositionProps>();
   const storedPosition = positionRef.current;
+  const isCompletedOpen = isOpen && position;
 
   useEffect(() => {
     const windowResize = () => {
       setIsOpen(false);
     };
 
+    const windowClick = (e: any) => {
+      if (
+        tooltipRef.current &&
+        !tooltipRef.current.contains(e.target) &&
+        window.getSelection()?.toString() === "" &&
+        isCompletedOpen
+      ) {
+        tooltip.close();
+      }
+    };
+
     window.addEventListener("resize", windowResize);
+    window.addEventListener("click", windowClick);
 
     return () => {
       window.removeEventListener("resize", windowResize);
+      window.removeEventListener("click", windowClick);
     };
-  }, []);
+  }, [isCompletedOpen]);
 
   useEffect(() => {
     if (isOpen) {
@@ -38,8 +52,6 @@ export const Tooltip: FC<TooltipProps> = ({ id }) => {
 
       const totalTop = (storedPosition?.top || 0) - tooltipHeight - 8;
       const totalLeft = (storedPosition?.left || 0) - tooltipWidth / 2 - 6;
-
-      console.log(tooltipHeight);
 
       setPosition({
         top: totalTop,

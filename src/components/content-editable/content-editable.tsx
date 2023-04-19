@@ -77,6 +77,8 @@ export const ContentEditable = (props: ContentEditableProps) => {
       return;
     }
 
+    console.log(selection);
+
     tooltip.open({
       content: (
         <FormatTextBar

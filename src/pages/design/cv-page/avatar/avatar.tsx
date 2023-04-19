@@ -2,6 +2,8 @@ import { ChangeEvent, useState } from "react";
 
 import SVG from "react-inlinesvg";
 
+import { getIconPath } from "@src/utils/helpers";
+
 import {
   AvatarWrapper,
   FileUploader,
@@ -9,7 +11,6 @@ import {
   PreviewPhoto,
   SelectYourPhoto,
 } from "./avatar.styled";
-import { getIconPath } from "@src/utils/helpers";
 
 const Avatar = () => {
   const [base64Photo, setBase64Photo] = useState("");

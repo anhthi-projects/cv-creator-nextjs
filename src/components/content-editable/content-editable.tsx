@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import HTMLReactParser from "html-react-parser";
 import SVG from "react-inlinesvg";
@@ -9,10 +9,13 @@ import { getIconPath } from "@src/utils/helpers";
 import { tooltip } from "../tooltip";
 
 import { Content, Wrapper } from "./content-editable.styled";
-import { ContentEditableProps } from "./content-editable.types";
 import {
-  applyStyleElement,
-  injectStyledElementToContent,
+  ContentEditableProps,
+  ContentTokenProps,
+} from "./content-editable.types";
+import {
+  contentTokensToString,
+  formatSelection,
 } from "./content-editable.utils";
 import FormatTextBar from "./format-bar/format-bar";
 
@@ -29,45 +32,54 @@ export const ContentEditable = (props: ContentEditableProps) => {
     noMargin,
   } = props;
 
-  const [controlledContent, setControlledContent] = useState<string>(
-    content?.toString() || ""
-  );
+  const [contentTokens, setContentTokens] = useState<ContentTokenProps[]>([
+    {
+      text: "hello",
+      tags: [
+        {
+          tagName: "strong",
+        },
+      ],
+      startAt: 0,
+      endAt: 0,
+    },
+    {
+      text: content || "",
+      startAt: 0,
+      endAt: content?.length || 0,
+    },
+    {
+      text: "world",
+      tags: [
+        {
+          tagName: "em",
+        },
+      ],
+      startAt: 0,
+      endAt: 0,
+    },
+  ]);
   const formatTextBarRef = useRef<HTMLDivElement>(null);
 
-  const formatSelection = (
-    tagName: string,
-    attrs: Record<string, string> = {}
-  ) => {
-    const selection = window.getSelection();
-
-    if (!selection) {
-      return;
-    }
-
-    console.log(selection);
-    const selectionInText = selection?.toString() || "";
-    const styledElementInText = applyStyleElement({
-      tagName,
-      attrs,
-      innerHtml: selectionInText,
-    });
-    const completedContent = injectStyledElementToContent({
-      selection,
-      content: controlledContent,
-      styledElementInText,
-    });
-
-    setControlledContent(completedContent);
-  };
+  /**
+   * Style actions
+   */
 
   const handleBold = () => {
-    formatSelection("strong");
+    formatSelection({
+      tagName: "strong",
+      originContentToken: contentTokens,
+    });
     tooltip.close();
   };
 
   const handleItalic = () => {};
 
   const handleUnderline = () => {};
+
+  /**
+   * Text selection
+   */
 
   const handleTextSelection = () => {
     const selection = window.getSelection();
@@ -94,6 +106,7 @@ export const ContentEditable = (props: ContentEditableProps) => {
       },
     });
   };
+
   /**
    * Render
    */
@@ -112,7 +125,7 @@ export const ContentEditable = (props: ContentEditableProps) => {
         contentEditable
         onSelect={handleTextSelection}
       >
-        {HTMLReactParser(controlledContent)}
+        {HTMLReactParser(contentTokensToString(contentTokens))}
       </Content>
     );
   };

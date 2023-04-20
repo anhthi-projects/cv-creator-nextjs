@@ -1,41 +1,59 @@
-interface ApplyStyleElementProps {
-  tagName: string;
-  attrs: Record<string, string>;
-  innerHtml: string;
-}
+import { ContentTokenProps } from "./content-editable.types";
 
-export const applyStyleElement = ({
-  tagName,
-  attrs,
-  innerHtml,
-}: ApplyStyleElementProps) => {
-  const styledElement = document.createElement(tagName);
+export const stringToContentTokens = (input: string) => {};
 
-  Object.keys(attrs).forEach((key) => {
-    styledElement.setAttribute(key, attrs[key]);
-  });
+export const contentTokensToString = (
+  contentTokens: ContentTokenProps[]
+): string => {
+  let accTokenId = 0;
 
-  styledElement.innerHTML = innerHtml;
-  return new XMLSerializer().serializeToString(styledElement);
+  return contentTokens
+    .map((token) => {
+      const tags = token.tags || [];
+
+      if (tags.length === 0) {
+        accTokenId = accTokenId + 1;
+        return token.text;
+      }
+
+      return tags.reduce((acc, tag, index) => {
+        const attributes = tag.attributes || {};
+        const attrInMap = Object.keys(attributes).map((attrKey) => {
+          return `${attrKey}="${attributes[attrKey]}"`;
+        });
+
+        if (index === tags.length - 1) {
+          attrInMap.push(`id="ct-${accTokenId}"`);
+          accTokenId = accTokenId + 1;
+        }
+
+        const attrInString = attrInMap.join(" ");
+        return `<${tag.tagName} ${attrInString}>${acc || token.text}</${
+          tag.tagName
+        }>`;
+      }, "");
+    })
+    .join("");
 };
 
 /**
- * Inject styled element to content
+ * Format selection
  */
 
-interface InjectStyledElementToContentProps {
-  selection: Selection;
-  content: string;
-  styledElementInText: string;
+interface FormatSelectionProps {
+  tagName: string;
+  attrs?: Record<string, string>;
+  originContentToken: ContentTokenProps[];
 }
 
-export const injectStyledElementToContent = ({
-  selection,
-  content,
-  styledElementInText,
-}: InjectStyledElementToContentProps) => {
-  const firstParagraph = content.slice(0, selection?.anchorOffset);
-  const lastParagraph = content.slice(selection?.focusOffset, content.length);
+export const formatSelection = ({
+  tagName,
+  attrs,
+  originContentToken,
+}: FormatSelectionProps) => {
+  const selection = window.getSelection();
 
-  return `${firstParagraph}${styledElementInText}${lastParagraph}`;
+  if (!selection || selection?.toString() === "") {
+    return;
+  }
 };

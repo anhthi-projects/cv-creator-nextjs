@@ -9,7 +9,7 @@ export interface IconProps {
 }
 
 export interface ContentEditableProps {
-  content?: ReactNode;
+  content?: string;
   placeholder?: string;
   color?: Color;
   fontSize?: FontSize;
@@ -19,4 +19,16 @@ export interface ContentEditableProps {
   justifyContent?: boolean;
   icon?: IconProps;
   className?: string;
+}
+
+export interface TagProps {
+  tagName: string;
+  attributes?: Record<string, string>;
+}
+
+export interface ContentTokenProps {
+  text: string;
+  tags?: TagProps[];
+  startAt: number;
+  endAt: number;
 }

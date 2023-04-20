@@ -1,36 +1,62 @@
-import { ContentTokenProps } from "./content-editable.types";
+import { ContentNodeProps } from "./content-editable.types";
 
-export const stringToContentTokens = (input: string) => {};
+/**
+ * Build tag element in string
+ */
 
-export const contentTokensToString = (
-  contentTokens: ContentTokenProps[]
+interface BuildTagElementInStringProps {
+  tagName: string;
+  innerHtml: string;
+  attributes?: Record<string, string>;
+}
+
+export const buildTagElementInString = (tag: BuildTagElementInStringProps) => {
+  const attributes = tag.attributes || {};
+  const attrsInMap = Object.keys(attributes).map((attrKey) => {
+    return `${attrKey}="${attributes[attrKey]}"`;
+  });
+  const attrsInString = attrsInMap.join(" ");
+
+  return `<${tag.tagName} ${attrsInString}>${tag.innerHtml}</${tag.tagName}>`;
+};
+
+/**
+ * String to content nodes
+ */
+
+export const stringToContentNodes = (input: string) => {};
+
+/**
+ * Content nodes to string
+ */
+
+export const contentNodesToString = (
+  contentNodes: ContentNodeProps[]
 ): string => {
   let accTokenId = 0;
 
-  return contentTokens
-    .map((token) => {
-      const tags = token.tags || [];
+  return contentNodes
+    .map((node) => {
+      const tags = node.tags || [];
 
       if (tags.length === 0) {
         accTokenId = accTokenId + 1;
-        return token.text;
+        return node.text;
       }
 
       return tags.reduce((acc, tag, index) => {
         const attributes = tag.attributes || {};
-        const attrInMap = Object.keys(attributes).map((attrKey) => {
-          return `${attrKey}="${attributes[attrKey]}"`;
-        });
 
         if (index === tags.length - 1) {
-          attrInMap.push(`id="ct-${accTokenId}"`);
+          attributes.id = `cn-${accTokenId}`;
           accTokenId = accTokenId + 1;
         }
 
-        const attrInString = attrInMap.join(" ");
-        return `<${tag.tagName} ${attrInString}>${acc || token.text}</${
-          tag.tagName
-        }>`;
+        return buildTagElementInString({
+          tagName: tag.tagName,
+          innerHtml: acc || node.text,
+          attributes,
+        });
       }, "");
     })
     .join("");
@@ -42,18 +68,60 @@ export const contentTokensToString = (
 
 interface FormatSelectionProps {
   tagName: string;
-  attrs?: Record<string, string>;
-  originContentToken: ContentTokenProps[];
+  attributes?: Record<string, string>;
+  originContentNodes: ContentNodeProps[];
 }
 
 export const formatSelection = ({
   tagName,
-  attrs,
-  originContentToken,
-}: FormatSelectionProps) => {
+  attributes,
+  originContentNodes,
+}: FormatSelectionProps): ContentNodeProps[] => {
   const selection = window.getSelection();
 
   if (!selection || selection?.toString() === "") {
-    return;
+    return originContentNodes;
   }
+
+  const { anchorNode } = selection;
+  const previousSibling = anchorNode?.previousSibling as HTMLElement;
+  const previousSiblingId =
+    previousSibling.getAttribute("id")?.split("-")[1] || "";
+
+  const cloneOriginContentNodes = [...originContentNodes];
+  const targetNodeIndex = parseInt(previousSiblingId) + 1;
+  const targetNode = cloneOriginContentNodes[targetNodeIndex];
+  const prevChunkInTargetNode = targetNode.text.slice(
+    0,
+    selection.anchorOffset
+  );
+  const lastChunkInTargetNode = targetNode.text.slice(
+    selection.focusOffset,
+    targetNode.text.length
+  );
+  const selectionInContentNode = {
+    text: selection.toString(),
+    tags: [
+      {
+        tagName,
+        attributes,
+      },
+    ],
+  } as ContentNodeProps;
+
+  cloneOriginContentNodes[targetNodeIndex] = {
+    text: prevChunkInTargetNode,
+  } as ContentNodeProps;
+  cloneOriginContentNodes.splice(
+    targetNodeIndex + 1,
+    0,
+    selectionInContentNode
+  );
+  cloneOriginContentNodes.splice(targetNodeIndex + 2, 0, {
+    text: lastChunkInTargetNode,
+  });
+
+  console.log(cloneOriginContentNodes);
+
+  return cloneOriginContentNodes;
 };

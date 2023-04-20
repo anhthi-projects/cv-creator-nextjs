@@ -11,10 +11,10 @@ import { tooltip } from "../tooltip";
 import { Content, Wrapper } from "./content-editable.styled";
 import {
   ContentEditableProps,
-  ContentTokenProps,
+  ContentNodeProps,
 } from "./content-editable.types";
 import {
-  contentTokensToString,
+  contentNodesToString,
   formatSelection,
 } from "./content-editable.utils";
 import FormatTextBar from "./format-bar/format-bar";
@@ -32,31 +32,28 @@ export const ContentEditable = (props: ContentEditableProps) => {
     noMargin,
   } = props;
 
-  const [contentTokens, setContentTokens] = useState<ContentTokenProps[]>([
+  const [contentNodes, setContentNodes] = useState<ContentNodeProps[]>([
     {
-      text: "hello",
+      text: "hello ",
+    },
+    {
+      text: " world ",
       tags: [
         {
           tagName: "strong",
         },
       ],
-      startAt: 0,
-      endAt: 0,
     },
     {
       text: content || "",
-      startAt: 0,
-      endAt: content?.length || 0,
     },
     {
-      text: "world",
+      text: " end",
       tags: [
         {
           tagName: "em",
         },
       ],
-      startAt: 0,
-      endAt: 0,
     },
   ]);
   const formatTextBarRef = useRef<HTMLDivElement>(null);
@@ -66,10 +63,12 @@ export const ContentEditable = (props: ContentEditableProps) => {
    */
 
   const handleBold = () => {
-    formatSelection({
+    const newContentNodes = formatSelection({
       tagName: "strong",
-      originContentToken: contentTokens,
+      originContentNodes: contentNodes,
     });
+
+    setContentNodes(newContentNodes);
     tooltip.close();
   };
 
@@ -125,7 +124,7 @@ export const ContentEditable = (props: ContentEditableProps) => {
         contentEditable
         onSelect={handleTextSelection}
       >
-        {HTMLReactParser(contentTokensToString(contentTokens))}
+        {HTMLReactParser(contentNodesToString(contentNodes))}
       </Content>
     );
   };

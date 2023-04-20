@@ -26,9 +26,7 @@ export interface TagProps {
   attributes?: Record<string, string>;
 }
 
-export interface ContentTokenProps {
+export interface ContentNodeProps {
   text: string;
   tags?: TagProps[];
-  startAt: number;
-  endAt: number;
 }

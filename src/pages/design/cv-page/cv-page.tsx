@@ -41,17 +41,15 @@ const CvPage = () => {
 
   return (
     <Wrapper isInPreview={isInPreview}>
-      <Flex>
-        <LeftColumn>
-          <Avatar />
-          {renderNameAndPosition()}
-          <Box height={Space.px28} />
-          <Contact />
-          <AboutMe />
-          <Education />
-        </LeftColumn>
-        <RightColumn>right</RightColumn>
-      </Flex>
+      <LeftColumn>
+        <Avatar />
+        {renderNameAndPosition()}
+        <Box height={Space.px28} />
+        <Contact />
+        <AboutMe />
+        <Education />
+      </LeftColumn>
+      <RightColumn>right</RightColumn>
     </Wrapper>
   );
 };

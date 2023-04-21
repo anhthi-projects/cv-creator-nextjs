@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import HTMLReactParser from "html-react-parser";
 import SVG from "react-inlinesvg";
 
+import { StyleTagName } from "@src/common/constants";
 import { Color, FontSize, FontWeight } from "@src/styles/variables";
 import { getIconPath } from "@src/utils/helpers";
 
@@ -64,7 +65,7 @@ export const ContentEditable = (props: ContentEditableProps) => {
 
   const handleBold = () => {
     const newContentNodes = formatSelection({
-      tagName: "strong",
+      tagName: StyleTagName.Bold,
       originContentNodes: contentNodes,
     });
 
@@ -72,7 +73,15 @@ export const ContentEditable = (props: ContentEditableProps) => {
     tooltip.close();
   };
 
-  const handleItalic = () => {};
+  const handleItalic = () => {
+    const newContentNodes = formatSelection({
+      tagName: "em",
+      originContentNodes: contentNodes,
+    });
+
+    setContentNodes(newContentNodes);
+    tooltip.close();
+  };
 
   const handleUnderline = () => {};
 
@@ -93,6 +102,7 @@ export const ContentEditable = (props: ContentEditableProps) => {
     tooltip.open({
       content: (
         <FormatTextBar
+          selection={selection}
           onBold={handleBold}
           onItalic={handleItalic}
           onUnderline={handleUnderline}

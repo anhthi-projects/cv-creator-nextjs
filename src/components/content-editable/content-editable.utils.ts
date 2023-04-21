@@ -85,13 +85,13 @@ export const formatSelection = ({
 
   const { anchorNode } = selection;
   const previousSibling = anchorNode?.previousSibling as HTMLElement;
-  const previousSiblingId =
+  const previousSiblingIndex =
     previousSibling.getAttribute("id")?.split("-")[1] || "";
+  const targetNodeIndex = parseInt(previousSiblingIndex) + 1;
 
   const cloneOriginContentNodes = [...originContentNodes];
-  const targetNodeIndex = parseInt(previousSiblingId) + 1;
   const targetNode = cloneOriginContentNodes[targetNodeIndex];
-  const prevChunkInTargetNode = targetNode.text.slice(
+  const firstChunkInTargetNode = targetNode.text.slice(
     0,
     selection.anchorOffset
   );
@@ -99,7 +99,11 @@ export const formatSelection = ({
     selection.focusOffset,
     targetNode.text.length
   );
-  const selectionInContentNode = {
+
+  cloneOriginContentNodes[targetNodeIndex] = {
+    text: firstChunkInTargetNode,
+  } as ContentNodeProps;
+  cloneOriginContentNodes.splice(targetNodeIndex + 1, 0, {
     text: selection.toString(),
     tags: [
       {
@@ -107,21 +111,10 @@ export const formatSelection = ({
         attributes,
       },
     ],
-  } as ContentNodeProps;
-
-  cloneOriginContentNodes[targetNodeIndex] = {
-    text: prevChunkInTargetNode,
-  } as ContentNodeProps;
-  cloneOriginContentNodes.splice(
-    targetNodeIndex + 1,
-    0,
-    selectionInContentNode
-  );
+  } as ContentNodeProps);
   cloneOriginContentNodes.splice(targetNodeIndex + 2, 0, {
     text: lastChunkInTargetNode,
-  });
-
-  console.log(cloneOriginContentNodes);
+  } as ContentNodeProps);
 
   return cloneOriginContentNodes;
 };

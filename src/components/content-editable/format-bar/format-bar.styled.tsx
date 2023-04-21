@@ -1,19 +1,23 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import { Color, Space } from "@src/styles/variables";
 
 export const FormatItem = styled.button`
-  min-width: 28px;
+  min-width: 32px;
   min-height: 32px;
   padding: ${Space.px4} 0;
-  margin-right: ${Space.px4};
-  background-color: transparent;
+  margin-right: ${Space.px6};
+  border-radius: 2px;
   border: none;
   outline: none;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+
+  ${({ isActive }: { isActive?: boolean }) => css`
+    background-color: ${isActive ? Color.Light9 : "transparent"};
+  `}
 
   &:last-child {
     margin-right: 0;

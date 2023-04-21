@@ -97,10 +97,9 @@ export enum ZIndex {
  * Breakpoints
  */
 
-export enum Breakpoint {
-  Sm = "640px",
-  Md = "768px",
-  Lg = "1024px",
-  Xl = "1280px",
-  Xxl = "1536px",
+export enum MediaQuery {
+  Sm = "@media (max-width: 640px)",
+  Md = "@media only screen and (max-width: 768px)",
+  Lg = "@media (max-width: 1024px)",
+  Xl = "@media (max-width: 1280px)",
 }

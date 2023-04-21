@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 
-import { Breakpoint, Color, Page, Space } from "@src/styles/variables";
+import { Color, MediaQuery, Page, Space } from "@src/styles/variables";
 
 export const LeftColumn = styled.div`
   width: ${`${Page.LeftColWidth}px`};
@@ -17,6 +17,7 @@ export const Wrapper = styled.div`
   max-width: ${`${Page.Width}px`};
   min-height: ${`${Page.Heigh}px`};
   background-color: ${Color.White};
+  display: flex;
 
   ${(props: { isInPreview: boolean }) => css`
     margin: ${props.isInPreview ? "auto" : "80px auto"};
@@ -28,7 +29,9 @@ export const Wrapper = styled.div`
       : "rgba(0, 0, 0, 0.3) 0.4rem 0.7rem 9.3rem 0.3rem"};
   `}
 
-  @media only screen and (max-width: ${Breakpoint.Md}) {
+  ${MediaQuery.Md} {
+    flex-direction: column;
+
     ${LeftColumn} {
       margin-right: 0;
       width: 100%;

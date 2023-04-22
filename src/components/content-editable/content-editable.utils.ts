@@ -72,6 +72,25 @@ interface FormatSelectionProps {
   originContentNodes: ContentNodeProps[];
 }
 
+interface StartEndSelectionIndexesResultProps {
+  selectionStartIndex: number;
+  selectionEndIndex: number;
+}
+
+const getStartEndSelectionIndexes = (
+  selection: Selection
+): StartEndSelectionIndexesResultProps => {
+  const isSelectInverse = selection.anchorOffset > selection.focusOffset;
+  return {
+    selectionStartIndex: isSelectInverse
+      ? selection.focusOffset
+      : selection.anchorOffset,
+    selectionEndIndex: isSelectInverse
+      ? selection.anchorOffset
+      : selection.focusOffset,
+  };
+};
+
 export const formatSelection = ({
   tagName,
   attributes,
@@ -84,24 +103,23 @@ export const formatSelection = ({
   }
 
   const { anchorNode } = selection;
-  const previousSibling = anchorNode?.previousSibling as HTMLElement;
-  const previousSiblingIndex =
-    previousSibling.getAttribute("id")?.split("-")[1] || "";
-  const targetNodeIndex = parseInt(previousSiblingIndex) + 1;
+  const prevSibling = anchorNode?.previousSibling as HTMLElement;
+  const prevSiblingIndex = prevSibling.getAttribute("id")?.split("-")[1] || "";
+  const targetNodeIndex = parseInt(prevSiblingIndex) + 1;
 
   const cloneOriginContentNodes = [...originContentNodes];
   const targetNode = cloneOriginContentNodes[targetNodeIndex];
-  const firstChunkInTargetNode = targetNode.text.slice(
-    0,
-    selection.anchorOffset
-  );
-  const lastChunkInTargetNode = targetNode.text.slice(
-    selection.focusOffset,
+
+  const { selectionStartIndex, selectionEndIndex } =
+    getStartEndSelectionIndexes(selection);
+  const newNodeBeforeTargetNode = targetNode.text.slice(0, selectionStartIndex);
+  const newNodeAfterTargetNode = targetNode.text.slice(
+    selectionEndIndex,
     targetNode.text.length
   );
 
   cloneOriginContentNodes[targetNodeIndex] = {
-    text: firstChunkInTargetNode,
+    text: newNodeBeforeTargetNode,
   } as ContentNodeProps;
   cloneOriginContentNodes.splice(targetNodeIndex + 1, 0, {
     text: selection.toString(),
@@ -113,7 +131,7 @@ export const formatSelection = ({
     ],
   } as ContentNodeProps);
   cloneOriginContentNodes.splice(targetNodeIndex + 2, 0, {
-    text: lastChunkInTargetNode,
+    text: newNodeAfterTargetNode,
   } as ContentNodeProps);
 
   return cloneOriginContentNodes;

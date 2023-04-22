@@ -1,4 +1,4 @@
-import { StyleTagName } from "@src/common/constants";
+import { SelectionType, StyleTagName } from "@src/common/constants";
 
 import { Attributes, ContentNodeProps } from "./content-editable.types";
 
@@ -12,18 +12,20 @@ interface BuildTagElementInStringProps {
   attributes?: Record<string, string>;
 }
 
-export const buildTagElementInString = (tag: BuildTagElementInStringProps) => {
-  const attributes = tag.attributes || {};
+export const constructTagElementInString = ({
+  tagName,
+  innerHtml,
+  attributes = {},
+}: BuildTagElementInStringProps) => {
   const attrsInMap = Object.keys(attributes).map((attrKey) => {
     return `${attrKey}="${attributes[attrKey]}"`;
   });
-  const attrsInString = attrsInMap.join(" ");
 
-  return `<${tag.tagName} ${attrsInString}>${tag.innerHtml}</${tag.tagName}>`;
+  return `<${tagName} ${attrsInMap.join(" ")}>${innerHtml}</${tagName}>`;
 };
 
 /**
- * String to content nodes
+ * Convert string to content nodes
  */
 
 export const stringToContentNodes = (input: string = "") => {
@@ -68,34 +70,35 @@ export const stringToContentNodes = (input: string = "") => {
 };
 
 /**
- * Content nodes to string
+ * Convert content nodes to string
  */
 
 export const contentNodesToString = (
   contentNodes: ContentNodeProps[]
 ): string => {
-  let accTokenId = 0;
+  let accTokenId = -1;
 
   return contentNodes
-    .map((node) => {
-      const tags = node.tags || [];
+    .map((contentNode) => {
+      const tags = contentNode.tags || [];
 
-      if (tags.length === 0) {
+      if (tags.length === 0 && contentNode.text !== "") {
         accTokenId = accTokenId + 1;
-        return node.text;
+        return contentNode.text;
       }
 
       return tags.reduce((acc, tag, index) => {
         const attributes = tag.attributes || {};
+        const isLastOuterTagElement = index === tags.length - 1;
 
-        if (index === tags.length - 1) {
-          attributes.id = `cn-${accTokenId}`;
+        if (isLastOuterTagElement) {
           accTokenId = accTokenId + 1;
+          attributes.id = `cn-${accTokenId}`;
         }
 
-        return buildTagElementInString({
+        return constructTagElementInString({
           tagName: tag.tagName,
-          innerHtml: acc || node.text,
+          innerHtml: acc || contentNode.text,
           attributes,
         });
       }, "");
@@ -106,12 +109,6 @@ export const contentNodesToString = (
 /**
  * Format selection
  */
-
-interface FormatSelectionProps {
-  tagName: string;
-  attributes?: Record<string, string>;
-  originContentNodes: ContentNodeProps[];
-}
 
 interface StartEndSelectionIndexesResultProps {
   selectionStartIndex: number;
@@ -132,6 +129,90 @@ const getStartEndSelectionIndexes = (
   };
 };
 
+/**
+ * Get targetContentNodeIndex
+ */
+
+interface GetContentNodeIndexesResult {
+  targetContentNodeIndex: number;
+}
+
+const getContentNodeIndexes = (
+  selection: Selection
+): GetContentNodeIndexesResult => {
+  const { anchorNode } = selection;
+  const prevSibling = anchorNode?.previousSibling as HTMLElement;
+  const prevSiblingIndex = prevSibling
+    ? prevSibling.getAttribute("id")?.split("-")[1] || ""
+    : "-1";
+  const targetContentNodeIndex = parseInt(prevSiblingIndex) + 1;
+
+  return {
+    targetContentNodeIndex,
+  };
+};
+
+/**
+ * Format pure selection
+ */
+
+interface FormatPureSelectionProps {
+  tagName: string;
+  attributes?: Attributes;
+  selection: Selection;
+  targetContentNode: ContentNodeProps;
+  targetContentNodeIndex: number;
+  originContentNodes: ContentNodeProps[];
+}
+
+export const formatPureSelection = ({
+  tagName,
+  attributes,
+  selection,
+  targetContentNode,
+  targetContentNodeIndex,
+  originContentNodes,
+}: FormatPureSelectionProps): ContentNodeProps[] => {
+  const { selectionStartIndex, selectionEndIndex } =
+    getStartEndSelectionIndexes(selection);
+  const newNodeBeforeTargetNode = targetContentNode.text.slice(
+    0,
+    selectionStartIndex
+  );
+  const newNodeAfterTargetNode = targetContentNode.text.slice(
+    selectionEndIndex,
+    targetContentNode.text.length
+  );
+
+  originContentNodes[targetContentNodeIndex] = {
+    text: newNodeBeforeTargetNode,
+  } as ContentNodeProps;
+  originContentNodes.splice(targetContentNodeIndex + 1, 0, {
+    text: selection.toString(),
+    tags: [
+      {
+        tagName,
+        attributes,
+      },
+    ],
+  } as ContentNodeProps);
+  originContentNodes.splice(targetContentNodeIndex + 2, 0, {
+    text: newNodeAfterTargetNode,
+  } as ContentNodeProps);
+
+  return originContentNodes;
+};
+
+/**
+ * Format selection
+ */
+
+interface FormatSelectionProps {
+  tagName: string;
+  attributes?: Attributes;
+  originContentNodes: ContentNodeProps[];
+}
+
 export const formatSelection = ({
   tagName,
   attributes,
@@ -143,37 +224,61 @@ export const formatSelection = ({
     return originContentNodes;
   }
 
-  const { anchorNode } = selection;
-  const prevSibling = anchorNode?.previousSibling as HTMLElement;
-  const prevSiblingIndex = prevSibling.getAttribute("id")?.split("-")[1] || "";
-  const targetNodeIndex = parseInt(prevSiblingIndex) + 1;
-
+  const { targetContentNodeIndex } = getContentNodeIndexes(selection);
   const cloneOriginContentNodes = [...originContentNodes];
-  const targetNode = cloneOriginContentNodes[targetNodeIndex];
+  const targetContentNode = cloneOriginContentNodes[targetContentNodeIndex];
 
-  const { selectionStartIndex, selectionEndIndex } =
-    getStartEndSelectionIndexes(selection);
-  const newNodeBeforeTargetNode = targetNode.text.slice(0, selectionStartIndex);
-  const newNodeAfterTargetNode = targetNode.text.slice(
-    selectionEndIndex,
-    targetNode.text.length
-  );
+  console.log("diff parents");
 
-  cloneOriginContentNodes[targetNodeIndex] = {
-    text: newNodeBeforeTargetNode,
-  } as ContentNodeProps;
-  cloneOriginContentNodes.splice(targetNodeIndex + 1, 0, {
-    text: selection.toString(),
-    tags: [
-      {
-        tagName,
-        attributes,
-      },
-    ],
-  } as ContentNodeProps);
-  cloneOriginContentNodes.splice(targetNodeIndex + 2, 0, {
-    text: newNodeAfterTargetNode,
-  } as ContentNodeProps);
+  return formatPureSelection({
+    tagName,
+    attributes,
+    selection,
+    targetContentNode,
+    targetContentNodeIndex,
+    originContentNodes: cloneOriginContentNodes,
+  });
+};
 
-  return cloneOriginContentNodes;
+/**
+ * Check valid selection
+ */
+
+export const getSelectionType = (selection: Selection): SelectionType => {
+  const { anchorNode, focusNode } = selection;
+  const isSameParent = anchorNode?.parentElement === focusNode?.parentElement;
+
+  if (
+    isSameParent &&
+    anchorNode?.previousSibling === focusNode?.previousSibling &&
+    anchorNode?.nextSibling === focusNode?.nextSibling
+  ) {
+    return SelectionType.PureText;
+  }
+
+  if (isSameParent && anchorNode?.nextSibling === focusNode?.previousSibling) {
+    return SelectionType.TagAtCenter;
+  }
+
+  if (isSameParent && anchorNode?.previousSibling === focusNode?.nextSibling) {
+    return SelectionType.TagAtCenterInverse;
+  }
+
+  if (anchorNode?.parentElement === focusNode?.previousSibling) {
+    return SelectionType.TagAtLeft;
+  }
+
+  if (anchorNode?.previousSibling === focusNode?.parentElement) {
+    return SelectionType.TagAtLeftInverse;
+  }
+
+  if (anchorNode?.nextSibling === focusNode?.parentElement) {
+    return SelectionType.TagAtRight;
+  }
+
+  if (anchorNode?.parentElement === focusNode?.nextSibling) {
+    return SelectionType.TagAtRightInverse;
+  }
+
+  return SelectionType.Invalid;
 };

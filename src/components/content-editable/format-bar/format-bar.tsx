@@ -1,4 +1,4 @@
-import { FC, forwardRef } from "react";
+import { FC } from "react";
 
 import SVG from "react-inlinesvg";
 
@@ -14,29 +14,25 @@ import {
 } from "./format-bar.styled";
 import { FormatBarProps } from "./format-bar.types";
 
-const FormatTextBar = forwardRef<HTMLDivElement, FormatBarProps>(function a(
-  props,
-  ref
-) {
-  const {
-    selection: { anchorNode, focusNode },
-    onBold,
-    onItalic,
-    onUnderline,
-  } = props;
-
+const FormatTextBar: FC<FormatBarProps> = ({
+  selection: { anchorNode, focusNode },
+  onBold,
+  onItalic,
+  onUnderline,
+}) => {
   const checkStyleActivated = (tagName: string) => {
     const anchorParentElement = anchorNode?.parentElement as HTMLElement;
     const focusParentElement = focusNode?.parentElement as HTMLElement;
+    const isSelectInSameElement = anchorParentElement === focusParentElement;
 
     return (
-      anchorParentElement === focusParentElement &&
+      isSelectInSameElement &&
       anchorParentElement.tagName.toLowerCase() === tagName
     );
   };
 
   return (
-    <FormatBarWrapper ref={ref}>
+    <FormatBarWrapper>
       <FormatItem
         isActive={checkStyleActivated(StyleTagName.Bold)}
         onClick={onBold}
@@ -71,6 +67,6 @@ const FormatTextBar = forwardRef<HTMLDivElement, FormatBarProps>(function a(
       </FormatItem>
     </FormatBarWrapper>
   );
-});
+};
 
 export default FormatTextBar;

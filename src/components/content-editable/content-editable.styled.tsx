@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 
-import { Color, Space } from "@src/styles/variables";
+import { Color, FontSize, Space } from "@src/styles/variables";
 
 import { ContentEditableProps } from "./content-editable.types";
 
@@ -38,4 +38,11 @@ export const Wrapper = styled.div`
   ${Content} {
     margin: ${Space.px4} 0 ${Space.px4} ${Space.px12};
   }
+`;
+
+export const NotSupportSelectionType = styled.div`
+  max-width: 200px;
+  min-height: 32px;
+  padding: ${Space.px6} ${Space.px8} ${Space.px8};
+  font-size: ${FontSize.Sm};
 `;

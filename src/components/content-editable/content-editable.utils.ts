@@ -1,4 +1,6 @@
-import { ContentNodeProps } from "./content-editable.types";
+import { StyleTagName } from "@src/common/constants";
+
+import { Attributes, ContentNodeProps } from "./content-editable.types";
 
 /**
  * Build tag element in string
@@ -24,7 +26,46 @@ export const buildTagElementInString = (tag: BuildTagElementInStringProps) => {
  * String to content nodes
  */
 
-export const stringToContentNodes = (input: string) => {};
+export const stringToContentNodes = (input: string = "") => {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(input, "text/html");
+  const contentNodes: ContentNodeProps[] = [];
+
+  doc.body.childNodes.forEach((node) => {
+    if (node.nodeName === "#text") {
+      contentNodes.push({
+        text: node.textContent || "",
+      });
+      return;
+    }
+
+    const tagElement = node as HTMLElement;
+    const tagName = tagElement.tagName.toLowerCase();
+    const getAttributes = (): Attributes => {
+      if (tagName === StyleTagName.Hyperlink) {
+        const url = tagElement.getAttribute("href") || "";
+        return {
+          href: url,
+          title: url,
+        };
+      }
+
+      return {};
+    };
+
+    contentNodes.push({
+      text: tagElement.innerText,
+      tags: [
+        {
+          tagName,
+          attributes: getAttributes(),
+        },
+      ],
+    });
+  });
+
+  return contentNodes;
+};
 
 /**
  * Content nodes to string

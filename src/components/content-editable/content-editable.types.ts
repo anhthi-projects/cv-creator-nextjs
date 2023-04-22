@@ -21,9 +21,11 @@ export interface ContentEditableProps {
   className?: string;
 }
 
+export type Attributes = Record<string, string>;
+
 export interface TagProps {
   tagName: string;
-  attributes?: Record<string, string>;
+  attributes?: Attributes;
 }
 
 export interface ContentNodeProps {

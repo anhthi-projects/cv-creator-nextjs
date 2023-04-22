@@ -15,7 +15,7 @@ export const RightColumn = styled.div`
 export const Wrapper = styled.div`
   width: 100%;
   max-width: ${`${Page.Width}px`};
-  min-height: ${`${Page.Heigh}px`};
+  min-height: ${`${Page.Height}px`};
   background-color: ${Color.White};
   display: flex;
 
@@ -27,14 +27,17 @@ export const Wrapper = styled.div`
     box-shadow: ${props.isInPreview
       ? "none"
       : "rgba(0, 0, 0, 0.3) 0.4rem 0.7rem 9.3rem 0.3rem"};
+
+    ${!props.isInPreview &&
+    css`
+      ${MediaQuery.MobileLg} {
+        flex-direction: column;
+
+        ${LeftColumn} {
+          margin-right: 0;
+          width: 100%;
+        }
+      }
+    `}
   `}
-
-  ${MediaQuery.Md} {
-    flex-direction: column;
-
-    ${LeftColumn} {
-      margin-right: 0;
-      width: 100%;
-    }
-  }
 `;

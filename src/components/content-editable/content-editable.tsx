@@ -17,6 +17,7 @@ import {
 import {
   contentNodesToString,
   formatSelection,
+  stringToContentNodes,
 } from "./content-editable.utils";
 import FormatTextBar from "./format-bar/format-bar";
 
@@ -33,31 +34,12 @@ export const ContentEditable = (props: ContentEditableProps) => {
     noMargin,
   } = props;
 
-  const [contentNodes, setContentNodes] = useState<ContentNodeProps[]>([
-    {
-      text: "hello ",
-    },
-    {
-      text: " world ",
-      tags: [
-        {
-          tagName: "strong",
-        },
-      ],
-    },
-    {
-      text: content || "",
-    },
-    {
-      text: " end",
-      tags: [
-        {
-          tagName: "em",
-        },
-      ],
-    },
-  ]);
+  const [contentNodes, setContentNodes] = useState<ContentNodeProps[]>([]);
   const formatTextBarRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setContentNodes(stringToContentNodes(content));
+  }, [content]);
 
   /**
    * Style actions

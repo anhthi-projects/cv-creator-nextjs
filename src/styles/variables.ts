@@ -4,7 +4,7 @@
 
 export enum Page {
   Width = 1000,
-  Heigh = 1000 * 1.402,
+  Height = 1000 * 1.402,
   PadTopBottom = 70,
   PadLeftRight = 50,
   LeftColWidth = 320,
@@ -98,8 +98,9 @@ export enum ZIndex {
  */
 
 export enum MediaQuery {
-  Sm = "@media (max-width: 640px)",
-  Md = "@media only screen and (max-width: 768px)",
-  Lg = "@media (max-width: 1024px)",
-  Xl = "@media (max-width: 1280px)",
+  MobileSm = "@media (max-width: 480px)",
+  MobileLg = "@media (max-width: 768px)",
+  Tablet = "@media (max-width: 1024px)",
+  Laptop = "@media (max-width: 1280px)",
+  Desktop = "@media (min-width: 1280px)",
 }

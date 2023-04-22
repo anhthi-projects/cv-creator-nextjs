@@ -44,6 +44,7 @@ const GlobalStyles = createGlobalStyle`
 
   a {
     text-decoration: none;
+    color: ${Color.Blue};
   }
 
   ul,

@@ -1,5 +1,3 @@
-import { ReactNode } from "react";
-
 import { Color, FontSize, FontWeight } from "@src/styles/variables";
 
 export interface IconProps {
@@ -19,16 +17,4 @@ export interface ContentEditableProps {
   justifyContent?: boolean;
   icon?: IconProps;
   className?: string;
-}
-
-export type Attributes = Record<string, string>;
-
-export interface TagProps {
-  tagName: string;
-  attributes?: Attributes;
-}
-
-export interface ContentNodeProps {
-  text: string;
-  tags?: TagProps[];
 }

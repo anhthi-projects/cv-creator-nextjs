@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import HTMLReactParser from "html-react-parser";
 import SVG from "react-inlinesvg";
 
-import { SelectionType, StyleTagName } from "@src/common/constants";
+import { ContentNodeProps, SelectionType, TagName } from "@src/common/types";
 import { Color, FontSize, FontWeight } from "@src/styles/variables";
+import { contentNodesToString, stringToContentNodes } from "@src/utils/dom";
 import { getIconPath } from "@src/utils/helpers";
 
 import { tooltip } from "../tooltip";
@@ -14,16 +15,8 @@ import {
   NotSupportSelectionType,
   Wrapper,
 } from "./content-editable.styled";
-import {
-  ContentEditableProps,
-  ContentNodeProps,
-} from "./content-editable.types";
-import {
-  getSelectionType,
-  contentNodesToString,
-  formatSelection,
-  stringToContentNodes,
-} from "./content-editable.utils";
+import { ContentEditableProps } from "./content-editable.types";
+import { getSelectionType, formatSelection } from "./content-editable.utils";
 import FormatBar from "./format-bar/format-bar";
 
 export const ContentEditable = (props: ContentEditableProps) => {
@@ -45,7 +38,7 @@ export const ContentEditable = (props: ContentEditableProps) => {
     setContentNodes(stringToContentNodes(content));
   }, [content]);
 
-  const handleStyleClick = (tagName: string) => {
+  const applyStyle = (tagName: string) => {
     const newContentNodes = formatSelection({
       tagName,
       originContentNodes: contentNodes,
@@ -77,9 +70,9 @@ export const ContentEditable = (props: ContentEditableProps) => {
         ) : (
           <FormatBar
             selection={selection}
-            onBold={() => handleStyleClick(StyleTagName.Bold)}
-            onItalic={() => handleStyleClick(StyleTagName.Italic)}
-            onUnderline={() => handleStyleClick(StyleTagName.Underline)}
+            onBold={() => applyStyle(TagName.Bold)}
+            onItalic={() => applyStyle(TagName.Italic)}
+            onUnderline={() => applyStyle(TagName.Underline)}
           />
         ),
       position: {

@@ -2,7 +2,7 @@ import { FC } from "react";
 
 import SVG from "react-inlinesvg";
 
-import { StyleTagName } from "@src/common/constants";
+import { TagName } from "@src/common/types";
 import { getIconPath } from "@src/utils/helpers";
 
 import {
@@ -13,42 +13,30 @@ import {
   FormatItem,
 } from "./format-bar.styled";
 import { FormatBarProps } from "./format-bar.types";
+import { checkStyleActivated } from "./format-bar.utils";
 
 const FormatTextBar: FC<FormatBarProps> = ({
-  selection: { anchorNode, focusNode },
+  selection,
   onBold,
   onItalic,
   onUnderline,
 }) => {
-  const checkStyleActivated = (tagName: string) => {
-    const anchorParentElement = anchorNode?.parentElement as HTMLElement;
-    const focusParentElement = focusNode?.parentElement as HTMLElement;
-    const isSelectInSameElement = anchorParentElement === focusParentElement;
-
-    return (
-      isSelectInSameElement &&
-      anchorParentElement.tagName.toLowerCase() === tagName
-    );
-  };
+  const isBoldActivated = checkStyleActivated(TagName.Bold, selection);
+  const isItalicActivated = checkStyleActivated(TagName.Italic, selection);
+  const isUnderlineActivated = checkStyleActivated(
+    TagName.Underline,
+    selection
+  );
 
   return (
     <FormatBarWrapper>
-      <FormatItem
-        isActive={checkStyleActivated(StyleTagName.Bold)}
-        onClick={onBold}
-      >
+      <FormatItem isActive={isBoldActivated} onClick={onBold}>
         <SVG src={getIconPath("bold.svg")} width={14} height={14} />
       </FormatItem>
-      <FormatItem
-        isActive={checkStyleActivated(StyleTagName.Italic)}
-        onClick={onItalic}
-      >
+      <FormatItem isActive={isItalicActivated} onClick={onItalic}>
         <SVG src={getIconPath("italic.svg")} width={14} height={14} />
       </FormatItem>
-      <FormatItem
-        isActive={checkStyleActivated(StyleTagName.Underline)}
-        onClick={onUnderline}
-      >
+      <FormatItem isActive={isUnderlineActivated} onClick={onUnderline}>
         <SVG src={getIconPath("underline.svg")} width={15} height={15} />
       </FormatItem>
       <Divider />

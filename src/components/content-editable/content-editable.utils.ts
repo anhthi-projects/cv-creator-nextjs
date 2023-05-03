@@ -1,8 +1,4 @@
-import {
-  AttributesProps,
-  ContentNodeProps,
-  SelectionType,
-} from "@src/common/types";
+import { AttributesProps, NodeProps, SelectionType } from "@src/common/types";
 import { checkStyleApplied } from "@src/utils/dom";
 
 /**
@@ -11,22 +7,25 @@ import { checkStyleApplied } from "@src/utils/dom";
 
 export const getSelectionType = (selection: Selection): SelectionType => {
   const { anchorNode, focusNode } = selection;
-  const isSameParent = anchorNode?.parentElement === focusNode?.parentElement;
 
-  if (
-    isSameParent &&
-    anchorNode?.previousSibling === focusNode?.previousSibling &&
-    anchorNode?.nextSibling === focusNode?.nextSibling
-  ) {
-    return SelectionType.PureText;
+  const anchorParentElement = anchorNode?.parentElement as HTMLElement;
+  const focusParentElement = focusNode?.parentElement as HTMLElement;
+  const anchorParentElementIndex = getNodeIndex(anchorParentElement);
+  const focusParentElementIndex = getNodeIndex(focusParentElement);
+  const isSameParent = anchorParentElement === focusParentElement;
+
+  if (isSameParent) {
+    return SelectionType.SameTag;
   }
 
-  if (isSameParent && anchorNode?.nextSibling === focusNode?.previousSibling) {
-    return SelectionType.TagAtCenter;
+  if (focusParentElementIndex - anchorParentElementIndex > 1) {
+    console.log("tags at center");
+    return SelectionType.TagsAtCenter;
   }
 
-  if (isSameParent && anchorNode?.previousSibling === focusNode?.nextSibling) {
-    return SelectionType.TagAtCenterInverse;
+  if (anchorParentElementIndex - focusParentElementIndex > 1) {
+    console.log("tags at center inverse");
+    return SelectionType.TagsAtCenterInverse;
   }
 
   if (anchorNode?.parentElement === focusNode?.previousSibling) {
@@ -52,32 +51,32 @@ export const getSelectionType = (selection: Selection): SelectionType => {
  * Format selection
  */
 
-const getContentNodeIndex = (tagElement: HTMLElement): string =>
-  tagElement.getAttribute("id")?.split("_")[1] || "";
+const getNodeIndex = (tagElement: HTMLElement): number =>
+  parseInt(tagElement.getAttribute("id")?.split("_")[1] || "");
 
 /**
- * Format pure selection
+ * Format same tag
  */
 
 interface FormatPureTextProps {
   tagName: string;
   attributes?: AttributesProps;
   selection: Selection;
-  originContentNodes: ContentNodeProps[];
+  originNodes: NodeProps[];
 }
 
-export const formatPureText = ({
+export const formatSameTag = ({
   tagName,
   attributes,
   selection,
-  originContentNodes,
-}: FormatPureTextProps): ContentNodeProps[] => {
+  originNodes,
+}: FormatPureTextProps): NodeProps[] => {
   const { anchorNode } = selection;
 
-  let selectedContentNodeIndex = parseInt(
-    getContentNodeIndex(anchorNode?.parentElement as HTMLElement)
+  let selectedNodeIndex = getNodeIndex(
+    anchorNode?.parentElement as HTMLElement
   );
-  const selectedContentNode = originContentNodes[selectedContentNodeIndex];
+  const selectedNode = originNodes[selectedNodeIndex];
   const selectionInText = selection.toString();
 
   const isStyleActivated = checkStyleApplied(tagName, selection);
@@ -97,15 +96,15 @@ export const formatPureText = ({
     !anchorNode?.nodeValue?.startsWith(selectionInText);
 
   if (needNodeBeforeSelected) {
-    const textForCNBeforeTarget = selectedContentNode.text.slice(
+    const textForCNBeforeTarget = selectedNode.text.slice(
       0,
       selectionStartIndex
     );
-    originContentNodes[selectedContentNodeIndex] = {
+    originNodes[selectedNodeIndex] = {
       text: textForCNBeforeTarget,
-      tags: selectedContentNode.tags,
-    } as ContentNodeProps;
-    selectedContentNodeIndex += 1;
+      tags: selectedNode.tags,
+    } as NodeProps;
+    selectedNodeIndex += 1;
   }
 
   /**
@@ -113,9 +112,9 @@ export const formatPureText = ({
    */
 
   const updatedTags = isStyleActivated
-    ? selectedContentNode.tags.filter((tag) => tag.tagName !== tagName)
+    ? selectedNode.tags.filter((tag) => tag.tagName !== tagName)
     : [
-        ...selectedContentNode.tags,
+        ...selectedNode.tags,
         {
           tagName,
           attributes,
@@ -123,15 +122,15 @@ export const formatPureText = ({
       ];
 
   if (needNodeBeforeSelected) {
-    originContentNodes.splice(selectedContentNodeIndex, 0, {
+    originNodes.splice(selectedNodeIndex, 0, {
       text: selectionInText,
       tags: updatedTags,
-    } as ContentNodeProps);
+    } as NodeProps);
   } else {
-    originContentNodes[selectedContentNodeIndex] = {
+    originNodes[selectedNodeIndex] = {
       text: selectionInText,
       tags: updatedTags,
-    } as ContentNodeProps;
+    } as NodeProps;
   }
 
   /**
@@ -142,18 +141,22 @@ export const formatPureText = ({
     !anchorNode?.nodeValue?.endsWith(selectionInText);
 
   if (needNodeAfterSelected) {
-    const textForCNAfterTarget = selectedContentNode.text.slice(
+    const textForCNAfterTarget = selectedNode.text.slice(
       selectionEndIndex,
-      selectedContentNode.text.length
+      selectedNode.text.length
     );
-    originContentNodes.splice(selectedContentNodeIndex + 1, 0, {
+    originNodes.splice(selectedNodeIndex + 1, 0, {
       text: textForCNAfterTarget,
-      tags: selectedContentNode.tags,
-    } as ContentNodeProps);
+      tags: selectedNode.tags,
+    } as NodeProps);
   }
 
-  return originContentNodes;
+  return originNodes;
 };
+
+/**
+ * Format tag at center
+ */
 
 /**
  * Format selection
@@ -162,34 +165,34 @@ export const formatPureText = ({
 interface FormatSelectionProps {
   tagName: string;
   attributes?: AttributesProps;
-  originContentNodes: ContentNodeProps[];
+  originNodes: NodeProps[];
 }
 
 export const formatSelection = ({
   tagName,
   attributes,
-  originContentNodes,
-}: FormatSelectionProps): ContentNodeProps[] => {
+  originNodes,
+}: FormatSelectionProps): NodeProps[] => {
   const selection = window.getSelection();
 
   if (!selection || selection?.toString() === "") {
-    return originContentNodes;
+    return originNodes;
   }
 
   const { anchorNode } = selection;
-  const cloneOriginContentNodes = [...originContentNodes];
+  const clonedOriginNodes = [...originNodes];
   const selectionType = getSelectionType(selection);
 
   /**
    * Format pure text
    */
 
-  if (selectionType === SelectionType.PureText) {
-    return formatPureText({
+  if (selectionType === SelectionType.SameTag) {
+    return formatSameTag({
       tagName,
       attributes,
       selection,
-      originContentNodes: cloneOriginContentNodes,
+      originNodes: clonedOriginNodes,
     });
   }
 
@@ -198,9 +201,11 @@ export const formatSelection = ({
    */
 
   if (selectionType === SelectionType.TagAtCenter) {
-    const centerTag = anchorNode?.previousSibling as HTMLElement;
-    const centerTagIndex = getContentNodeIndex(centerTag);
+    const centerTag = anchorNode?.parentElement as HTMLElement;
+    const centerTagIndex = getNodeIndex(centerTag);
+    const nodeBeforeSelected = originNodes[centerTagIndex - 1];
+    const nodeAfterSelected = originNodes[centerTagIndex + 1];
   }
 
-  return originContentNodes;
+  return originNodes;
 };

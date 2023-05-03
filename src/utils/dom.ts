@@ -1,4 +1,4 @@
-import { ContentNodeProps, TagProps, TagName } from "@src/common/types";
+import { NodeProps, TagProps, TagName } from "@src/common/types";
 
 /**
  * Construct tag element in string
@@ -66,14 +66,14 @@ export const getDescendantTags = (rootTag: HTMLElement): TagProps[] => {
  * Convert string to content nodes
  */
 
-export const stringToContentNodes = (input: string = "") => {
+export const stringToNodes = (input: string = "") => {
   const parser = new DOMParser();
   const doc = parser.parseFromString(input, "text/html");
-  const contentNodes: ContentNodeProps[] = [];
+  const nodes: NodeProps[] = [];
 
   doc.body.childNodes.forEach((node) => {
     if (node.nodeName === "#text") {
-      contentNodes.push({
+      nodes.push({
         text: node.textContent || "",
         tags: [
           {
@@ -86,33 +86,30 @@ export const stringToContentNodes = (input: string = "") => {
     }
 
     const tagElement = node as HTMLElement;
-    contentNodes.push({
+    nodes.push({
       text: tagElement.innerText,
       tags: getDescendantTags(tagElement),
     });
   });
 
-  return contentNodes;
+  return nodes;
 };
 
 /**
  * Convert content nodes to string
  */
 
-interface ContentNodesToStringProps {
+interface NodesToStringProps {
   name: string;
-  contentNodes: ContentNodeProps[];
+  nodes: NodeProps[];
 }
 
-export const contentNodesToString = ({
-  name,
-  contentNodes,
-}: ContentNodesToStringProps): string => {
+export const nodesToString = ({ name, nodes }: NodesToStringProps): string => {
   let accTokenId = 0;
 
-  return contentNodes
-    .map((contentNode) => {
-      const tags = contentNode.tags || [];
+  return nodes
+    .map((node) => {
+      const tags = node.tags || [];
 
       return tags.reduce((acc, tag, index) => {
         const attributes = tag.attributes || {};
@@ -126,7 +123,7 @@ export const contentNodesToString = ({
 
         return constructTagInString({
           tagName: tag.tagName,
-          innerHtml: acc || contentNode.text,
+          innerHtml: acc || node.text,
           attributes,
         });
       }, "");

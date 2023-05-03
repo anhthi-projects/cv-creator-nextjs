@@ -5,7 +5,7 @@ export interface TagProps {
   attributes?: AttributesProps;
 }
 
-export interface ContentNodeProps {
+export interface NodeProps {
   text: string;
   tags: TagProps[];
 }
@@ -19,12 +19,12 @@ export enum TagName {
 }
 
 export enum SelectionType {
-  PureText = "pure-text",
+  SameTag = "same-tag",
   TagAtLeft = "tag-at-left",
   TagAtLeftInverse = "tag-at-left-inverse",
   TagAtRight = "tag-at-right",
   TagAtRightInverse = "tag-at-right-inverse",
-  TagAtCenter = "tag-at-center",
-  TagAtCenterInverse = "tag-at-center-inverse",
+  TagsAtCenter = "tags-at-center",
+  TagsAtCenterInverse = "tags-at-center-inverse",
   Invalid = "invalid",
 }

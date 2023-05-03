@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import HTMLReactParser from "html-react-parser";
 import SVG from "react-inlinesvg";
 
-import { ContentNodeProps, SelectionType, TagName } from "@src/common/types";
+import { NodeProps, SelectionType, TagName } from "@src/common/types";
 import { Color, FontSize, FontWeight } from "@src/styles/variables";
-import { contentNodesToString, stringToContentNodes } from "@src/utils/dom";
+import { nodesToString, stringToNodes } from "@src/utils/dom";
 import { getIconPath, toSnakeCase } from "@src/utils/helpers";
 
 import { tooltip } from "../tooltip";
@@ -33,19 +33,19 @@ export const ContentEditable = (props: ContentEditableProps) => {
     noMargin,
   } = props;
 
-  const [contentNodes, setContentNodes] = useState<ContentNodeProps[]>([]);
+  const [nodes, setNodes] = useState<NodeProps[]>([]);
 
   useEffect(() => {
-    setContentNodes(stringToContentNodes(content));
+    setNodes(stringToNodes(content));
   }, [content]);
 
   const applyStyle = (tagName: string) => {
-    const newContentNodes = formatSelection({
+    const newNodes = formatSelection({
       tagName,
-      originContentNodes: contentNodes,
+      originNodes: nodes,
     });
 
-    setContentNodes(newContentNodes);
+    setNodes(newNodes);
     tooltip.close();
   };
 
@@ -58,23 +58,24 @@ export const ContentEditable = (props: ContentEditableProps) => {
     }
 
     const selectionType = getSelectionType(selection);
+    const tooltipContent =
+      selectionType === SelectionType.Invalid ? (
+        <NotSupportSelectionType>
+          This selection is not supported
+        </NotSupportSelectionType>
+      ) : (
+        <FormatBar
+          selection={selection}
+          onBold={() => applyStyle(TagName.Bold)}
+          onItalic={() => applyStyle(TagName.Italic)}
+          onUnderline={() => applyStyle(TagName.Underline)}
+        />
+      );
 
     console.log(selection);
 
     tooltip.open({
-      content:
-        selectionType === SelectionType.Invalid ? (
-          <NotSupportSelectionType>
-            This selection is not supported
-          </NotSupportSelectionType>
-        ) : (
-          <FormatBar
-            selection={selection}
-            onBold={() => applyStyle(TagName.Bold)}
-            onItalic={() => applyStyle(TagName.Italic)}
-            onUnderline={() => applyStyle(TagName.Underline)}
-          />
-        ),
+      content: tooltipContent,
       position: {
         top: window.scrollY + rangeRect.top,
         left: rangeRect.right,
@@ -101,9 +102,9 @@ export const ContentEditable = (props: ContentEditableProps) => {
         onSelect={selectText}
       >
         {HTMLReactParser(
-          contentNodesToString({
+          nodesToString({
             name: toSnakeCase(name),
-            contentNodes,
+            nodes,
           })
         )}
       </Content>

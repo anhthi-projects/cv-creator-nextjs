@@ -2,12 +2,13 @@ import { FC } from "react";
 
 import { Color, FontSize, FontWeight } from "@src/styles/variables";
 
-import { Title } from "./section-title.styled";
+import { StyledContentEditable } from "./section-title.styled";
 import { SectionTitleProps } from "./section-title.types";
 
 export const SectionTitle: FC<SectionTitleProps> = ({ title }) => {
   return (
-    <Title
+    <StyledContentEditable
+      name={title}
       content={title}
       placeholder={title}
       color={Color.Light10}

@@ -6,7 +6,7 @@ import { ContentEditableProps } from "./content-editable.types";
 
 type StyledParagraph = Omit<
   ContentEditableProps,
-  "value" | "placeholder" | "icon"
+  "name" | "value" | "icon" | "placeholder"
 >;
 
 export const Content = styled.div<StyledParagraph>`
@@ -31,12 +31,12 @@ export const Content = styled.div<StyledParagraph>`
   `}
 `;
 
-export const Wrapper = styled.div`
+export const IconWrapper = styled.div`
   display: flex;
   align-items: center;
 
   ${Content} {
-    margin: ${Space.px4} 0 ${Space.px4} ${Space.px12};
+    margin: ${Space.px4} 0 ${Space.px4} ${Space.px8};
   }
 `;
 

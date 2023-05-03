@@ -7,6 +7,7 @@ export interface IconProps {
 }
 
 export interface ContentEditableProps {
+  name: string;
   content?: string;
   placeholder?: string;
   color?: Color;

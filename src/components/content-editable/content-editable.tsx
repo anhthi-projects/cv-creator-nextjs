@@ -6,14 +6,14 @@ import SVG from "react-inlinesvg";
 import { ContentNodeProps, SelectionType, TagName } from "@src/common/types";
 import { Color, FontSize, FontWeight } from "@src/styles/variables";
 import { contentNodesToString, stringToContentNodes } from "@src/utils/dom";
-import { getIconPath } from "@src/utils/helpers";
+import { getIconPath, toSnakeCase } from "@src/utils/helpers";
 
 import { tooltip } from "../tooltip";
 
 import {
   Content,
   NotSupportSelectionType,
-  Wrapper,
+  IconWrapper,
 } from "./content-editable.styled";
 import { ContentEditableProps } from "./content-editable.types";
 import { getSelectionType, formatSelection } from "./content-editable.utils";
@@ -21,6 +21,7 @@ import FormatBar from "./format-bar/format-bar";
 
 export const ContentEditable = (props: ContentEditableProps) => {
   const {
+    name,
     content,
     icon,
     placeholder = "Empty",
@@ -57,9 +58,6 @@ export const ContentEditable = (props: ContentEditableProps) => {
     }
 
     const selectionType = getSelectionType(selection);
-
-    console.log(selection);
-    console.log(selectionType);
 
     tooltip.open({
       content:
@@ -100,21 +98,26 @@ export const ContentEditable = (props: ContentEditableProps) => {
         contentEditable
         onSelect={handleTextSelection}
       >
-        {HTMLReactParser(contentNodesToString(contentNodes))}
+        {HTMLReactParser(
+          contentNodesToString({
+            name: toSnakeCase(name),
+            contentNodes,
+          })
+        )}
       </Content>
     );
   };
 
   if (icon) {
     return (
-      <Wrapper>
+      <IconWrapper>
         <SVG
           src={getIconPath(icon.iconName)}
           width={icon.width || 22}
           height={icon.height || 22}
         />
         {renderContent()}
-      </Wrapper>
+      </IconWrapper>
     );
   }
 

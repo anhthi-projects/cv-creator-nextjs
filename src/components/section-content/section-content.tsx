@@ -17,6 +17,7 @@ export const SectionContent: FC<SectionContentProps> = ({
       <SectionTitle title={title} />
       {contents.map(({ key, content, placeholder, icon }) => (
         <ContentEditable
+          name={title}
           key={key}
           content={content}
           placeholder={placeholder}

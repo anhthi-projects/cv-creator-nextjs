@@ -3,8 +3,7 @@ import {
   ContentNodeProps,
   SelectionType,
 } from "@src/common/types";
-
-import { checkStyleActivated } from "./format-bar/format-bar.utils";
+import { checkStyleApplied } from "@src/utils/dom";
 
 /**
  * Format selection
@@ -32,7 +31,7 @@ export const formatPureText = ({
 }: FormatPureTextProps): ContentNodeProps[] => {
   const { anchorNode } = selection;
 
-  const isStyleActivated = checkStyleActivated(tagName, selection);
+  const isStyleActivated = checkStyleApplied(tagName, selection);
   const targetContentNodeIndex = parseInt(
     getContentNodeIndex(anchorNode?.parentElement as HTMLElement)
   );
@@ -54,8 +53,6 @@ export const formatPureText = ({
     text: textForCNBeforeTarget,
     tags: targetContentNode.tags,
   } as ContentNodeProps;
-
-  console.log("targetContentNode tags: ", targetContentNode.tags);
 
   /* Target node */
   const updatedTags = isStyleActivated

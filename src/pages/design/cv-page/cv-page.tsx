@@ -18,6 +18,7 @@ const CvPage = () => {
     return (
       <>
         <ContentEditable
+          name="your-name"
           content="Thi Nguyen Anh"
           placeholder="Your name"
           color={Color.Primary}
@@ -27,6 +28,7 @@ const CvPage = () => {
           noMargin
         />
         <ContentEditable
+          name="your-position"
           content="Senior Developer"
           placeholder="Your position"
           color={Color.Light8}

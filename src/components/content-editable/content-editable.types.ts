@@ -8,6 +8,7 @@ export interface IconProps {
 
 export interface ContentEditableProps {
   name: string;
+  icon?: IconProps;
   content?: string;
   placeholder?: string;
   color?: Color;
@@ -16,6 +17,5 @@ export interface ContentEditableProps {
   textAlign?: "left" | "right" | "center" | "justify";
   noMargin?: boolean;
   justifyContent?: boolean;
-  icon?: IconProps;
   className?: string;
 }

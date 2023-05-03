@@ -117,10 +117,10 @@ export const contentNodesToString = ({
       return tags.reduce((acc, tag, index) => {
         const attributes = tag.attributes || {};
         delete attributes.id;
-        const isLastOuterTagElement = index === tags.length - 1;
+        const isDeepestTag = index === 0;
 
-        if (isLastOuterTagElement) {
-          attributes.id = `${name}-cn-${accTokenId}`;
+        if (isDeepestTag) {
+          attributes.id = `${name}-cn_${accTokenId}`;
           accTokenId = accTokenId + 1;
         }
 

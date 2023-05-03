@@ -6,84 +6,6 @@ import {
 import { checkStyleApplied } from "@src/utils/dom";
 
 /**
- * Format selection
- */
-
-const getContentNodeIndex = (tagElement: HTMLElement): string =>
-  tagElement.getAttribute("id")?.split("-")[1] || "";
-
-/**
- * Format pure selection
- */
-
-interface FormatPureTextProps {
-  tagName: string;
-  attributes?: AttributesProps;
-  selection: Selection;
-  originContentNodes: ContentNodeProps[];
-}
-
-export const formatPureText = ({
-  tagName,
-  attributes,
-  selection,
-  originContentNodes,
-}: FormatPureTextProps): ContentNodeProps[] => {
-  const { anchorNode } = selection;
-
-  const isStyleActivated = checkStyleApplied(tagName, selection);
-  const targetContentNodeIndex = parseInt(
-    getContentNodeIndex(anchorNode?.parentElement as HTMLElement)
-  );
-  const targetContentNode = originContentNodes[targetContentNodeIndex];
-  const isSelectInverse = selection.anchorOffset > selection.focusOffset;
-  const selectionStartIndex = isSelectInverse
-    ? selection.focusOffset
-    : selection.anchorOffset;
-  const selectionEndIndex = isSelectInverse
-    ? selection.anchorOffset
-    : selection.focusOffset;
-
-  /* Node before target */
-  const textForCNBeforeTarget = targetContentNode.text.slice(
-    0,
-    selectionStartIndex
-  );
-  originContentNodes[targetContentNodeIndex] = {
-    text: textForCNBeforeTarget,
-    tags: targetContentNode.tags,
-  } as ContentNodeProps;
-
-  /* Target node */
-  const updatedTags = isStyleActivated
-    ? targetContentNode.tags.filter((tag) => tag.tagName !== tagName)
-    : [
-        ...targetContentNode.tags,
-        {
-          tagName,
-          attributes,
-        },
-      ];
-  console.log("updatedTags:", updatedTags);
-  originContentNodes.splice(targetContentNodeIndex + 1, 0, {
-    text: selection.toString(),
-    tags: updatedTags,
-  } as ContentNodeProps);
-
-  /* Node after target */
-  const textForCNAfterTarget = targetContentNode.text.slice(
-    selectionEndIndex,
-    targetContentNode.text.length
-  );
-  originContentNodes.splice(targetContentNodeIndex + 2, 0, {
-    text: textForCNAfterTarget,
-    tags: targetContentNode.tags,
-  } as ContentNodeProps);
-
-  return originContentNodes;
-};
-
-/**
  * Get selection type
  */
 
@@ -124,6 +46,113 @@ export const getSelectionType = (selection: Selection): SelectionType => {
   }
 
   return SelectionType.Invalid;
+};
+
+/**
+ * Format selection
+ */
+
+const getContentNodeIndex = (tagElement: HTMLElement): string =>
+  tagElement.getAttribute("id")?.split("_")[1] || "";
+
+/**
+ * Format pure selection
+ */
+
+interface FormatPureTextProps {
+  tagName: string;
+  attributes?: AttributesProps;
+  selection: Selection;
+  originContentNodes: ContentNodeProps[];
+}
+
+export const formatPureText = ({
+  tagName,
+  attributes,
+  selection,
+  originContentNodes,
+}: FormatPureTextProps): ContentNodeProps[] => {
+  const { anchorNode } = selection;
+
+  let selectedContentNodeIndex = parseInt(
+    getContentNodeIndex(anchorNode?.parentElement as HTMLElement)
+  );
+  const selectedContentNode = originContentNodes[selectedContentNodeIndex];
+  const selectionInText = selection.toString();
+
+  const isStyleActivated = checkStyleApplied(tagName, selection);
+  const isSelectInverse = selection.anchorOffset > selection.focusOffset;
+  const selectionStartIndex = isSelectInverse
+    ? selection.focusOffset
+    : selection.anchorOffset;
+  const selectionEndIndex = isSelectInverse
+    ? selection.anchorOffset
+    : selection.focusOffset;
+
+  /**
+   * Node before selected
+   */
+
+  const needNodeBeforeSelected =
+    !anchorNode?.nodeValue?.startsWith(selectionInText);
+
+  if (needNodeBeforeSelected) {
+    const textForCNBeforeTarget = selectedContentNode.text.slice(
+      0,
+      selectionStartIndex
+    );
+    originContentNodes[selectedContentNodeIndex] = {
+      text: textForCNBeforeTarget,
+      tags: selectedContentNode.tags,
+    } as ContentNodeProps;
+    selectedContentNodeIndex += 1;
+  }
+
+  /**
+   * Selected node
+   */
+
+  const updatedTags = isStyleActivated
+    ? selectedContentNode.tags.filter((tag) => tag.tagName !== tagName)
+    : [
+        ...selectedContentNode.tags,
+        {
+          tagName,
+          attributes,
+        },
+      ];
+
+  if (needNodeBeforeSelected) {
+    originContentNodes.splice(selectedContentNodeIndex, 0, {
+      text: selectionInText,
+      tags: updatedTags,
+    } as ContentNodeProps);
+  } else {
+    originContentNodes[selectedContentNodeIndex] = {
+      text: selectionInText,
+      tags: updatedTags,
+    } as ContentNodeProps;
+  }
+
+  /**
+   * Node after selected
+   */
+
+  const needNodeAfterSelected =
+    !anchorNode?.nodeValue?.endsWith(selectionInText);
+
+  if (needNodeAfterSelected) {
+    const textForCNAfterTarget = selectedContentNode.text.slice(
+      selectionEndIndex,
+      selectedContentNode.text.length
+    );
+    originContentNodes.splice(selectedContentNodeIndex + 1, 0, {
+      text: textForCNAfterTarget,
+      tags: selectedContentNode.tags,
+    } as ContentNodeProps);
+  }
+
+  return originContentNodes;
 };
 
 /**

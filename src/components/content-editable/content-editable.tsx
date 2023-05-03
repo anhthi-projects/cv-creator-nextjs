@@ -22,8 +22,8 @@ import FormatBar from "./format-bar/format-bar";
 export const ContentEditable = (props: ContentEditableProps) => {
   const {
     name,
-    content,
     icon,
+    content,
     placeholder = "Empty",
     color = Color.Light7,
     fontSize = FontSize.Md,
@@ -49,7 +49,7 @@ export const ContentEditable = (props: ContentEditableProps) => {
     tooltip.close();
   };
 
-  const handleTextSelection = () => {
+  const selectText = () => {
     const selection = window.getSelection();
     const rangeRect = selection?.getRangeAt(0).getBoundingClientRect();
 
@@ -58,6 +58,8 @@ export const ContentEditable = (props: ContentEditableProps) => {
     }
 
     const selectionType = getSelectionType(selection);
+
+    console.log(selection);
 
     tooltip.open({
       content:
@@ -96,7 +98,7 @@ export const ContentEditable = (props: ContentEditableProps) => {
         noMargin={noMargin}
         suppressContentEditableWarning
         contentEditable
-        onSelect={handleTextSelection}
+        onSelect={selectText}
       >
         {HTMLReactParser(
           contentNodesToString({

@@ -36,7 +36,8 @@ export const ContentEditable = (props: ContentEditableProps) => {
   const [nodes, setNodes] = useState<NodeProps[]>([]);
 
   useEffect(() => {
-    setNodes(stringToNodes(content));
+    const updatedNodes = stringToNodes(content);
+    setNodes(updatedNodes);
   }, [content]);
 
   const applyStyle = (tagName: string) => {
@@ -57,7 +58,10 @@ export const ContentEditable = (props: ContentEditableProps) => {
       return;
     }
 
-    const selectionType = getSelectionType(selection);
+    const selectionType = getSelectionType({
+      selection,
+      nodes,
+    });
     const tooltipContent =
       selectionType === SelectionType.Invalid ? (
         <NotSupportSelectionType>

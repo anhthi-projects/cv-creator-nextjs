@@ -1,58 +1,111 @@
 import { AttributesProps, NodeProps, SelectionType } from "@src/common/types";
-import { checkStyleApplied } from "@src/utils/dom";
+import {
+  checkTagHasAnyStyle,
+  checkIsStyleApplied,
+  getTagIndex,
+} from "@src/utils/dom";
 
 /**
  * Get selection type
  */
 
-export const getSelectionType = (selection: Selection): SelectionType => {
+interface GetSelectionTypeProps {
+  selection: Selection;
+  nodes: NodeProps[];
+}
+
+export const getSelectionType = ({
+  selection,
+  nodes,
+}: GetSelectionTypeProps): SelectionType => {
   const { anchorNode, focusNode } = selection;
 
-  const anchorParentElement = anchorNode?.parentElement as HTMLElement;
-  const focusParentElement = focusNode?.parentElement as HTMLElement;
-  const anchorParentElementIndex = getNodeIndex(anchorParentElement);
-  const focusParentElementIndex = getNodeIndex(focusParentElement);
-  const isSameParent = anchorParentElement === focusParentElement;
+  const textSelection = selection.toString();
+  const anchorElement = anchorNode?.parentElement as HTMLElement;
+  const focusElement = focusNode?.parentElement as HTMLElement;
 
-  if (isSameParent) {
-    return SelectionType.SameTag;
+  const anchorIndex = getTagIndex(anchorElement);
+  const focusIndex = getTagIndex(focusElement);
+  const lengthOfAnchorAndFocus = focusIndex - anchorIndex;
+  const lengthOfFocusAndAnchor = anchorIndex - focusIndex;
+
+  const isSameElement = anchorElement === focusElement;
+
+  /**
+   * Same Style
+   */
+
+  if (
+    isSameElement &&
+    textSelection === anchorElement.textContent &&
+    textSelection === focusElement.textContent
+  ) {
+    console.log("same style fully");
+    return SelectionType.SameStyleFully;
   }
 
-  if (focusParentElementIndex - anchorParentElementIndex > 1) {
+  if (
+    isSameElement &&
+    (anchorElement.textContent?.includes(textSelection) ||
+      focusElement.textContent?.includes(textSelection))
+  ) {
+    console.log("same style partial");
+    return SelectionType.SameStylePartial;
+  }
+
+  /**
+   * Style at center
+   */
+
+  if (lengthOfAnchorAndFocus === 2) {
     console.log("tags at center");
-    return SelectionType.TagsAtCenter;
+    return SelectionType.StyleAtCenter;
   }
 
-  if (anchorParentElementIndex - focusParentElementIndex > 1) {
+  if (lengthOfFocusAndAnchor === 2) {
     console.log("tags at center inverse");
-    return SelectionType.TagsAtCenterInverse;
+    return SelectionType.StyleAtCenterInverse;
   }
 
-  if (anchorNode?.parentElement === focusNode?.previousSibling) {
-    return SelectionType.TagAtLeft;
+  /**
+   * Style at left
+   */
+
+  const isAnchorStyleApplied = checkTagHasAnyStyle({
+    tagElement: anchorElement,
+    nodes,
+  });
+  const isFocusStyleApplied = checkTagHasAnyStyle({
+    tagElement: focusElement,
+    nodes,
+  });
+
+  if (lengthOfAnchorAndFocus === 1 && isAnchorStyleApplied) {
+    console.log("tag at left");
+    return SelectionType.StyleAtLeftFully;
   }
 
-  if (anchorNode?.previousSibling === focusNode?.parentElement) {
-    return SelectionType.TagAtLeftInverse;
+  if (lengthOfFocusAndAnchor === 1 && isFocusStyleApplied) {
+    console.log("tag at left inverse");
+    return SelectionType.StyleAtLeftInverseFully;
   }
+
+  /**
+   * Tag at right
+   */
 
   if (anchorNode?.nextSibling === focusNode?.parentElement) {
-    return SelectionType.TagAtRight;
+    console.log("tag at right");
+    return SelectionType.StyleAtRightFully;
   }
 
   if (anchorNode?.parentElement === focusNode?.nextSibling) {
-    return SelectionType.TagAtRightInverse;
+    console.log("tag at right inverse");
+    return SelectionType.StyleAtRightInverseFully;
   }
 
   return SelectionType.Invalid;
 };
-
-/**
- * Format selection
- */
-
-const getNodeIndex = (tagElement: HTMLElement): number =>
-  parseInt(tagElement.getAttribute("id")?.split("_")[1] || "");
 
 /**
  * Format same tag
@@ -73,13 +126,11 @@ export const formatSameTag = ({
 }: FormatPureTextProps): NodeProps[] => {
   const { anchorNode } = selection;
 
-  let selectedNodeIndex = getNodeIndex(
-    anchorNode?.parentElement as HTMLElement
-  );
+  let selectedNodeIndex = getTagIndex(anchorNode?.parentElement as HTMLElement);
   const selectedNode = originNodes[selectedNodeIndex];
   const selectionInText = selection.toString();
 
-  const isStyleActivated = checkStyleApplied(tagName, selection);
+  const isStyleActivated = checkIsStyleApplied(tagName, selection);
   const isSelectInverse = selection.anchorOffset > selection.focusOffset;
   const selectionStartIndex = isSelectInverse
     ? selection.focusOffset
@@ -181,13 +232,16 @@ export const formatSelection = ({
 
   const { anchorNode } = selection;
   const clonedOriginNodes = [...originNodes];
-  const selectionType = getSelectionType(selection);
+  const selectionType = getSelectionType({
+    selection,
+    nodes: originNodes,
+  });
 
   /**
    * Format pure text
    */
 
-  if (selectionType === SelectionType.SameTag) {
+  if (selectionType === SelectionType.SameStyleFully) {
     return formatSameTag({
       tagName,
       attributes,
@@ -200,9 +254,9 @@ export const formatSelection = ({
    * Format tag at center
    */
 
-  if (selectionType === SelectionType.TagAtCenter) {
+  if (selectionType === SelectionType.StyleAtCenter) {
     const centerTag = anchorNode?.parentElement as HTMLElement;
-    const centerTagIndex = getNodeIndex(centerTag);
+    const centerTagIndex = getTagIndex(centerTag);
     const nodeBeforeSelected = originNodes[centerTagIndex - 1];
     const nodeAfterSelected = originNodes[centerTagIndex + 1];
   }

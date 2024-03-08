@@ -23,7 +23,7 @@ export const constructTagInString = ({
 };
 
 /**
- * Get tag name and attributes
+ * Get descendant tags
  */
 
 export const getDescendantTags = (rootTag: HTMLElement): TagProps[] => {
@@ -63,10 +63,34 @@ export const getDescendantTags = (rootTag: HTMLElement): TagProps[] => {
 };
 
 /**
+ * Get ancestor tag names
+ */
+
+export const getAncestorTagNames = (
+  childElement?: HTMLElement | null
+): string[] => {
+  const ancestorTagNames: string[] = [];
+
+  const getParentTagName = (element?: HTMLElement | null) => {
+    const parentTagName = element?.parentElement?.tagName.toLowerCase() || "";
+
+    if (!parentTagName || parentTagName === "div") {
+      return;
+    }
+
+    ancestorTagNames.push(parentTagName);
+    getParentTagName(element?.parentElement);
+  };
+
+  getParentTagName(childElement);
+  return ancestorTagNames;
+};
+
+/**
  * Convert string to content nodes
  */
 
-export const stringToNodes = (input: string = "") => {
+export const stringToNodes = (input: string = ""): NodeProps[] => {
   const parser = new DOMParser();
   const doc = parser.parseFromString(input, "text/html");
   const nodes: NodeProps[] = [];
@@ -132,34 +156,17 @@ export const nodesToString = ({ name, nodes }: NodesToStringProps): string => {
 };
 
 /**
- * Get ancestor tag names
+ * Get Tag Index
  */
 
-export const getAncestorTagNames = (
-  childElement?: HTMLElement | null
-): string[] => {
-  const ancestorTagNames: string[] = [];
-
-  const getParentTagName = (element?: HTMLElement | null) => {
-    const parentTagName = element?.parentElement?.tagName.toLowerCase() || "";
-
-    if (!parentTagName || parentTagName === "div") {
-      return;
-    }
-
-    ancestorTagNames.push(parentTagName);
-    getParentTagName(element?.parentElement);
-  };
-
-  getParentTagName(childElement);
-  return ancestorTagNames;
-};
+export const getTagIndex = (tagElement: HTMLElement): number =>
+  parseInt(tagElement.getAttribute("id")?.split("_")[1] || "");
 
 /**
- * Check style activated
+ * Check Is style applied
  */
 
-export const checkStyleApplied = (tagName: string, selection: Selection) => {
+export const checkIsStyleApplied = (tagName: string, selection: Selection) => {
   const { anchorNode, focusNode } = selection;
 
   const ancestorTagNames = getAncestorTagNames(anchorNode?.parentElement);
@@ -168,4 +175,27 @@ export const checkStyleApplied = (tagName: string, selection: Selection) => {
     (focusNode?.parentElement as HTMLElement);
 
   return isSelectInSameTag && ancestorTagNames.includes(tagName);
+};
+
+/**
+ * Check Does tag has style
+ */
+
+interface CheckTagHasAnyStyleProps {
+  tagElement: HTMLElement;
+  nodes: NodeProps[];
+}
+
+export const checkTagHasAnyStyle = ({
+  tagElement,
+  nodes,
+}: CheckTagHasAnyStyleProps): boolean => {
+  const tagIndex = getTagIndex(tagElement);
+  const targetNode = nodes[tagIndex];
+
+  return !!targetNode.tags.find((tag) =>
+    [TagName.Bold, TagName.Italic, TagName.Underline].includes(
+      tag.tagName as TagName
+    )
+  );
 };

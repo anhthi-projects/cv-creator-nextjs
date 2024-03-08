@@ -3,7 +3,7 @@ import { FC } from "react";
 import SVG from "react-inlinesvg";
 
 import { TagName } from "@src/common/types";
-import { checkStyleApplied } from "@src/utils/dom";
+import { checkIsStyleApplied } from "@src/utils/dom";
 import { getIconPath } from "@src/utils/helpers";
 
 import {
@@ -21,9 +21,12 @@ const FormatTextBar: FC<FormatBarProps> = ({
   onItalic,
   onUnderline,
 }) => {
-  const isBoldActivated = checkStyleApplied(TagName.Bold, selection);
-  const isItalicActivated = checkStyleApplied(TagName.Italic, selection);
-  const isUnderlineActivated = checkStyleApplied(TagName.Underline, selection);
+  const isBoldActivated = checkIsStyleApplied(TagName.Bold, selection);
+  const isItalicActivated = checkIsStyleApplied(TagName.Italic, selection);
+  const isUnderlineActivated = checkIsStyleApplied(
+    TagName.Underline,
+    selection
+  );
 
   return (
     <FormatBarWrapper>

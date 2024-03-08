@@ -19,12 +19,21 @@ export enum TagName {
 }
 
 export enum SelectionType {
-  SameTag = "same-tag",
-  TagAtLeft = "tag-at-left",
-  TagAtLeftInverse = "tag-at-left-inverse",
-  TagAtRight = "tag-at-right",
-  TagAtRightInverse = "tag-at-right-inverse",
-  TagsAtCenter = "tags-at-center",
-  TagsAtCenterInverse = "tags-at-center-inverse",
+  SameStyleFully = "same-style-fully",
+  SameStylePartial = "same-style-partial",
+
+  StyleAtCenter = "style-at-center",
+  StyleAtCenterInverse = "style-at-center-inverse",
+
+  StyleAtLeftFully = "style-at-left-fully",
+  StyleAtLeftPartial = "style-at-left-partial",
+  StyleAtLeftInverseFully = "style-at-left-inverse-fully",
+  StyleAtLeftInversePartial = "style-at-left-inverse-partial",
+
+  StyleAtRightFully = "style-at-right-fully",
+  StyleAtRightPartial = "style-at-right-partial",
+  StyleAtRightInverseFully = "style-at-right-inverse-fully",
+  StyleAtRightInversePartial = "style-at-right-inverse-partial",
+
   Invalid = "invalid",
 }
